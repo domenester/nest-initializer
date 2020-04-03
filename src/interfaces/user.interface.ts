@@ -1,10 +1,12 @@
-import { IEntityBase, IEntityBaseId } from "./entity.interface";
+import { IsEmail, IsNotEmpty } from 'class-validator';
 
-export interface IUser {
-  id: IEntityBaseId;
-  username: string;
+export class CreateUserDto {
+  @IsEmail()
   email: string;
-  password?: string;
-}
 
-export interface IUserEntity extends IUser, IEntityBase { }
+  @IsNotEmpty()
+  password: string;
+
+  @IsNotEmpty()
+  username: string;
+}

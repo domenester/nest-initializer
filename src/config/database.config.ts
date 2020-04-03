@@ -1,6 +1,6 @@
 import { TypeOrmModuleOptions } from '@nestjs/typeorm';
 
-export const typeOrmOptions = {
+export const typeOrmOptions: TypeOrmModuleOptions = {
   type: 'postgres',
   host: '127.0.0.1',
   port: 5432,
@@ -12,4 +12,7 @@ export const typeOrmOptions = {
   keepConnectionAlive: true,
 }
 
-export default (): TypeOrmModuleOptions => typeOrmOptions as TypeOrmModuleOptions;
+export default (distRelativePath = ''): TypeOrmModuleOptions => ({
+  ...typeOrmOptions,
+  entities: [`${distRelativePath}dist/**/*.entity{.ts,.js}`],
+}) as TypeOrmModuleOptions;

@@ -1,18 +1,9 @@
-import { IUserEntity } from "./user.interface";
 import { OneToMany, Column, PrimaryGeneratedColumn } from "typeorm";
 import { UserEntity } from "../users/user.entity";
 
 export type IEntityBaseId = number
 
-export interface IEntityBase {
-  id: IEntityBaseId;
-  createdBy: IUserEntity;
-  updatedBy: IUserEntity;
-  createdAt: Date;
-  updatedAt: Date;
-}
-
-export class EntityBase implements IEntityBase {
+export class EntityBase {
   @PrimaryGeneratedColumn()
   id: IEntityBaseId;
 

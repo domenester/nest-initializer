@@ -1,9 +1,10 @@
 import { Entity, Column } from 'typeorm';
-import { IUserEntity, EntityBase } from '../interfaces';
+import { EntityBase } from '../interfaces';
+import { IsEmail } from 'class-validator';
 
 @Entity({name: 'user'})
 
-export class UserEntity extends EntityBase implements IUserEntity {
+export class UserEntity extends EntityBase {
   @Column({ type: 'varchar' })
   username: string;
 
@@ -11,8 +12,9 @@ export class UserEntity extends EntityBase implements IUserEntity {
     type: 'varchar',
     unique: true
   })
+  @IsEmail()
   email: string;
 
   @Column({ type: 'varchar' })
-  password: string;
+  password?: string;
 }

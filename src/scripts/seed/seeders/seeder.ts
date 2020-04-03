@@ -1,14 +1,16 @@
-export class Seeder {
+import { success, error } from 'log-symbols'
+
+export abstract class Seeder {
   name: string
 
-  async setup() {}
+  abstract async setup()
 
   async seed() {
     try {
       await this.setup()
-      console.log(`${this.name} created.`)
+      console.log(success, `${this.name} seeded.`)
     } catch (err) {
-      console.log(`Error creating user: ${err}`)
+      console.log(error, `Error seeding ${this.name}: ${err}`)
     }
   }
 }
