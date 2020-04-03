@@ -25,6 +25,11 @@
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
     "test:e2e": "jest --config ./test/jest-e2e.json"
   },
+  "husky": {
+    "hooks": {
+      "pre-push": "npm test"
+    }
+  },
   "dependencies": {
     "@nestjs/common": "^7.0.5",
     "@nestjs/core": "^7.0.5",
@@ -63,6 +68,7 @@
     "eslint-config-prettier": "^6.10.0",
     "eslint-plugin-import": "^2.20.1",
     "faker": "^4.1.0",
+    "husky": "^4.2.3",
     "jest": "^25.1.0",
     "log-symbols": "^3.0.0",
     "prettier": "^1.19.1",
