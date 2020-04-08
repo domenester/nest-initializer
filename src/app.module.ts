@@ -12,6 +12,8 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import databaseConfig from './config/database.config';
 
+const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
+
 @Module({
   imports: [
     AuthModule,
@@ -22,7 +24,7 @@ import databaseConfig from './config/database.config';
       signOptions: { expiresIn: '60s' },
     }),
     TypeOrmModule.forRoot(
-      databaseConfig(),
+      databaseConfig(entitiesRelativePath),
     ),
   ],
   controllers: [AppController, AuthController],

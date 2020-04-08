@@ -7,12 +7,11 @@ export const typeOrmOptions: TypeOrmModuleOptions = {
   username: 'postgres',
   password: 'postgres',
   database: 'postgres',
-  entities: ['dist/**/*.entity{.ts,.js}'],
   synchronize: true,
   keepConnectionAlive: true,
 }
 
-export default (distRelativePath = ''): TypeOrmModuleOptions => ({
+export default (entitiesRelativePath = '.'): TypeOrmModuleOptions => ({
   ...typeOrmOptions,
-  entities: [`${distRelativePath}dist/**/*.entity{.ts,.js}`],
+  entities: [`${entitiesRelativePath}/**/*.entity{.ts,.js}`],
 }) as TypeOrmModuleOptions;

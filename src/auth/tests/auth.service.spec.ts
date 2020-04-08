@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { Test, TestingModule } from '@nestjs/testing'
 import { AuthService } from '../auth.service'
@@ -51,9 +52,8 @@ describe('Auth Service', () => {
 
   it('should login user', async () => {
     const userLogged = await service.login(loginMock)
-    expect(userLogged.access_token).toBeDefined()
-    // eslint-disable-next-line
-    const { access_token, ...userEntity } = userLogged
-    expect(userEntity).toEqual(loginMock)
+    const { access_token, user } = userLogged
+    expect(access_token).toBeDefined()
+    expect(user.email).toEqual(loginMock.email)
   })
 })

@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/camelcase */
 import { Test, TestingModule } from '@nestjs/testing';
 import { AuthController } from '../auth.controller';
 import { userServiceProviders } from '../../users/tests/providers';
@@ -33,9 +34,8 @@ describe('Auth Controller', () => {
 
   it('should login user', async () => {
     const userLogged = await controller.login({ user: loginMock })
-    expect(userLogged.access_token).toBeDefined()
-    // eslint-disable-next-line
-    const { access_token, ...userEntity } = userLogged
-    expect(userEntity).toEqual(loginMock)
+    const { access_token, user } = userLogged
+    expect(access_token).toBeDefined()
+    expect(user.email).toEqual(loginMock.email)
   });
 });

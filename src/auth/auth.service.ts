@@ -11,8 +11,8 @@ export class AuthService {
     private jwtService: JwtService
   ) {}
 
-  async validateUser(username: string, password: string): Promise<UserEntity> {
-    const user = await this.usersService.getByEmail(username);
+  async validateUser(email: string, password: string): Promise<UserEntity> {
+    const user = await this.usersService.getByEmail(email);
     if (!user) { return; }
     const validPassword = bcrypt.compareSync(password, user.password);
     if (user && validPassword) {
@@ -23,9 +23,9 @@ export class AuthService {
   }
 
   async login(user: UserEntity) {
-    const payload = { username: user.username, sub: user.id };
+    const payload = { email: user.email, sub: user.id };
     return {
-      ...user,
+      user,
       // eslint-disable-next-line @typescript-eslint/camelcase
       access_token: this.jwtService.sign(payload),
     };
