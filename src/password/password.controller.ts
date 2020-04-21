@@ -17,4 +17,12 @@ export class PasswordController {
     if (!userByEmail) throw new BadRequestException('Email not found')
     return this.passwordService.sendResetPasswordLink(email)
   }
+
+  @HttpCode(200)
+  @Post('reset')
+  async reset(@Request() { body: { email, password } }) {
+    const userByEmail = await this.usersService.getByEmail(email)
+    if (!userByEmail) throw new BadRequestException('Email not found')
+    return this.passwordService.resetPassword(email, password)
+  }
 }
