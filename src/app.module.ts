@@ -1,4 +1,7 @@
 import { Module } from '@nestjs/common';
+import { PugAdapter, MailerModule } from '@nestjs-modules/mailer';
+import { ConfigModule } from '@nestjs/config';
+
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
@@ -10,12 +13,32 @@ import { JwtModule } from '@nestjs/jwt';
 import { jwtConstants } from './auth/constants';
 import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
+import { PasswordModule } from './password/password.module';
 import databaseConfig from './config/database.config';
 
 const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
 
+export const MailerModuleForRoot = MailerModule.forRoot({
+  transport: 'smtps://domene.dev@gmail.com:DomeneDevPa$$@smtp.gmail.com',
+  defaults: {
+    from:'Nest Initializer <initializer@nestjs.com>',
+  },
+  template: {
+    dir: __dirname + '/templates',
+    adapter: new PugAdapter(),
+    options: {
+      strict: true,
+    },
+  },
+})
+
+export const ConfigModuleForRoot = ConfigModule.forRoot({
+  envFilePath: '.env',
+})
+
 @Module({
   imports: [
+    ConfigModuleForRoot,
     AuthModule,
     UsersModule,
     PassportModule,
@@ -26,6 +49,8 @@ const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
     TypeOrmModule.forRoot(
       databaseConfig(entitiesRelativePath),
     ),
+    PasswordModule,
+    MailerModuleForRoot,
   ],
   controllers: [AppController, AuthController],
   providers: [AppService, AuthService, JwtStrategy],
