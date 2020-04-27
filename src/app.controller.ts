@@ -11,9 +11,4 @@ export class AppController {
   getProfile(@Request() req) {
     return req.user;
   }
-
-  @Get()
-  getHello(): string {
-    return this.appService.getHello();
-  }
 }

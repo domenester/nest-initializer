@@ -9,6 +9,7 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { PasswordService } from '../password.service'
 import { ConfigModule } from '@nestjs/config'
 import { MailerModuleForRoot } from '../../app.module'
+import UserMocks from '../../users/tests/mocks'
 
 describe('Password Service', () => {
   let service: PasswordService
@@ -36,11 +37,18 @@ describe('Password Service', () => {
     expect(service).toBeDefined()
   })
 
-  it('should send reset password link to valid email', async () => {
+  it('should send reset password link', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
     const userValidated = await service.sendResetPasswordLink(
       defaultAdmin.email
     )
     expect(typeof userValidated.message).toBe('string')
+  })
+
+  it('should reset password', async () => {
+    const { setPassword: { valid: { email, password } } } = UserMocks
+    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never);
+    const response = await service.resetPassword(email, password)
+    expect(response.message).toBeDefined()
   })
 })

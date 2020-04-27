@@ -10,6 +10,7 @@
     "outDir": "./dist",
     "baseUrl": "./",
     "incremental": true,
+    "noImplicitAny": false,
     "paths": {
       "@src/*": ["src/*"],
       "@config/*": ["src/config/*"],

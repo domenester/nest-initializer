@@ -9,6 +9,7 @@ import { Repository } from 'typeorm';
 import { UserEntity } from '../../users/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { defaultAdmin } from '../../scripts/seed/seeders/user/faker';
+import UserMocks from '../../users/tests/mocks'
 
 describe('Auth Controller', () => {
   let controller: PasswordController;
@@ -37,7 +38,7 @@ describe('Auth Controller', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should send reset password link to valid email', async () => {
+  it('should send reset password', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
     const response = await controller.requestReset(
       { body: { email: defaultAdmin.email } }
@@ -45,15 +46,12 @@ describe('Auth Controller', () => {
     expect(typeof response.message).toBe('string')
   });
 
-  it('should throw sending reset password link to invalid email', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(null as never)
-    await controller.requestReset(
-      { body: { email: 'invalidemail' } }
-    ).catch(
-      (error: any) => {
-        const { response } = error
-        expect(response.statusCode).toBe(400)
-      }
-    )
+  it('should reset password', async () => {
+    const { setPassword: { valid: { email, password } } } = UserMocks
+    const { create: { valid } } = UserMocks
+    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never)
+    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(valid as never)
+    const response = await controller.reset( { body: { email, password } } )
+    expect(typeof response.message).toBe('string')
   });
 });
