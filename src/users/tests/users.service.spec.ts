@@ -39,41 +39,11 @@ describe('Users Service Tests', () => {
     expect(userByEmail).toEqual(_default);
   });
 
-  it('should throw getting user by invalid email', async () => {
-    const { _default } = UserMocks
-    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(_default as never);
-    await service.getByEmail('invalidemail')
-      .catch( error => {
-        expect(error.status).toBe(400)
-        expect(error.message).toBe('Invalid Email')
-      })
-  });
-
   it('should set user password', async () => {
     const { setPassword: { valid: { email, password } } } = UserMocks
     jest.spyOn(repository, 'update').mockResolvedValueOnce(true as never);
     const updated = await service.setPassword(email, password);
     expect(updated).toEqual(true);
-  });
-
-  it('should throw setting user password with invalid email', async () => {
-    const { setPassword: { invalid: { email: { email, password } } } } = UserMocks
-    jest.spyOn(repository, 'update').mockResolvedValueOnce(true as never);
-    await service.setPassword(email, password)
-      .catch( error => {
-        expect(error.status).toBe(400)
-        expect(error.message).toBe('Invalid Email')
-      })
-  });
-
-  it('should throw setting user password with invalid password', async () => {
-    const { setPassword: { invalid: { password: { email, password } } } } = UserMocks
-    jest.spyOn(repository, 'update').mockResolvedValueOnce(true as never);
-    await service.setPassword(email, password)
-      .catch( error => {
-        expect(error.status).toBe(400)
-        expect(error.message).toBe('Password min length is 8')
-      })
   });
 
   it('should soft delete by email', async () => {

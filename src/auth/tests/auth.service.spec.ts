@@ -10,6 +10,7 @@ import { Repository } from 'typeorm'
 import { UserEntity } from '../../users/user.entity'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { loginMock } from './mocks'
+import * as bcrypt from 'bcrypt'
 
 /**
  * TODO: Implement auth.service tests
@@ -42,7 +43,9 @@ describe('Auth Service', () => {
   })
 
   it('should validate user', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
+    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce({
+      ...defaultAdmin, password: bcrypt.hashSync(defaultAdminPassword, 10)
+    } as never)
     const userValidated = await service.validateUser(
       defaultAdmin.email, defaultAdminPassword
     )

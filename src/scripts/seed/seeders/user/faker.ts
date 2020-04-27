@@ -1,17 +1,20 @@
 import * as faker from 'faker';
-import { CreateUserDto } from '../../../../interfaces';
+import { CreateUserDto } from '../../../../dtos';
 import * as bcrypt from 'bcrypt';
 
-export const defaultAdminPassword = 'admin'
+export const defaultAdminPassword = '12345678'
 
 export const defaultAdmin = {
   username: 'admin',
-  password: bcrypt.hashSync(defaultAdminPassword, 10),
+  password: defaultAdminPassword,
   email: 'admin@mail.com'
 }
 
 export default (): Array<CreateUserDto> => {
-  const usersFake: Array<CreateUserDto> = [ defaultAdmin ]
+  const usersFake: Array<CreateUserDto> = [{
+    ...defaultAdmin,
+    password: bcrypt.hashSync(defaultAdmin.password, 10)
+   }]
 
   for (let i = 0; i < +process.env.FAKER_LENGTH - 1; i++) {
     const name = faker.name.findName()

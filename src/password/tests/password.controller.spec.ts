@@ -41,7 +41,7 @@ describe('Auth Controller', () => {
   it('should send reset password', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
     const response = await controller.requestReset(
-      { body: { email: defaultAdmin.email } }
+      { email: defaultAdmin.email }
     )
     expect(typeof response.message).toBe('string')
   });
@@ -51,7 +51,7 @@ describe('Auth Controller', () => {
     const { create: { valid } } = UserMocks
     jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never)
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(valid as never)
-    const response = await controller.reset( { body: { email, password } } )
+    const response = await controller.reset( { email, password } )
     expect(typeof response.message).toBe('string')
   });
 });
