@@ -6,6 +6,9 @@ import { AppModule } from '../src/app.module';
 import { AuthMocks } from './mocks';
 import { defaultAdmin, defaultAdminPassword } from '../src/scripts/seed/seeders/user/faker';
 import { DefaultHeader } from './utils';
+import { JwtService } from '@nestjs/jwt';
+import { jwtConstants } from '../src/auth/constants';
+import jwtConfig from '../src/config/jwt'
 
 describe('PasswordController (e2e)', () => {
   let app: INestApplication;
@@ -26,30 +29,24 @@ describe('PasswordController (e2e)', () => {
       auth_token = access_token
   });
 
-  it('expect to throw with invalid email', async () => {
-    const { password } = defaultAdmin
-    await request(app.getHttpServer())
-      .post('/password/reset')
-      .set(DefaultHeader(auth_token))
-      .send({ email: 'invalid', password })
-      .expect(400)
-  });
-
   it('expect to throw with invalid password length', async () => {
-    const { email } = defaultAdmin
     await request(app.getHttpServer())
       .post('/password/reset')
       .set(DefaultHeader(auth_token))
-      .send({ email, password: '1234567' })
+      .send({ password: '1234567' })
       .expect(400)
   });
 
   it('/password/reset (POST)', async () => {
     const { email } = defaultAdmin
+    const jwtService: JwtService = new JwtService({
+      secret: jwtConstants.secret,
+      signOptions: { expiresIn: jwtConfig.expiresInDefault },
+    })
     await request(app.getHttpServer())
       .post('/password/reset')
-      .set(DefaultHeader(auth_token))
-      .send({ email, password: defaultAdminPassword })
+      .set(DefaultHeader(jwtService.sign({email})))
+      .send({ password: defaultAdminPassword })
       .expect(200)
   });
 });
