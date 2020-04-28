@@ -10,6 +10,7 @@ import { PasswordService } from '../password.service'
 import { ConfigModule } from '@nestjs/config'
 import { MailerModuleForRoot } from '../../app.module'
 import UserMocks from '../../users/tests/mocks'
+import { JwtModuleRegister } from '../password.module'
 
 describe('Password Service', () => {
   let service: PasswordService
@@ -21,7 +22,8 @@ describe('Password Service', () => {
         ConfigModule.forRoot({
           envFilePath: '.env',
         }),
-        MailerModuleForRoot
+        MailerModuleForRoot,
+        JwtModuleRegister
       ],
       providers: [
         PasswordService,

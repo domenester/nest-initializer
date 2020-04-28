@@ -1,17 +1,27 @@
-import { Controller, Post, Request, HttpCode, BadRequestException, UsePipes, Body } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  HttpCode,
+  BadRequestException,
+  UsePipes,
+  Body,
+  UseGuards,
+  Headers
+} from '@nestjs/common';
 import { PasswordService } from './password.service';
 import { UsersService } from '../users/users.service';
-import { JoiValidationPipe } from '../pipes/joi.pipe';
-import { resetPasswordSchema } from '../validators';
 import { ValidationPipe } from '../pipes/validation.pipe';
 import { ResetPasswordDto } from '../dtos';
+import { JwtAuthGuard } from '../auth/strategies/jwt-auth.guard';
+import { JwtService } from '@nestjs/jwt';
 
 @Controller('password')
 export class PasswordController {
 
   constructor(
     private passwordService: PasswordService,
-    private usersService: UsersService
+    private usersService: UsersService,
+    private jwtService: JwtService
   ) {}
 
   @HttpCode(200)
@@ -23,9 +33,15 @@ export class PasswordController {
   }
 
   @HttpCode(200)
+  @UseGuards(JwtAuthGuard)
   @Post('reset')
   @UsePipes(new ValidationPipe())
-  async reset(@Body() { email, password }: ResetPasswordDto) {
+  async reset(
+    @Body() { password }: ResetPasswordDto,
+    @Headers() { authorization }
+  ) {
+    const token = authorization.replace('Bearer ', '');
+    const { email } = this.jwtService.verify(token)
     const userByEmail = await this.usersService.getByEmail(email)
     if (!userByEmail) throw new BadRequestException('Email not found')
     return this.passwordService.resetPassword(email, password)

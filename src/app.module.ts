@@ -15,6 +15,7 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { PasswordModule } from './password/password.module';
 import databaseConfig from './config/database.config';
+import jwtConfig from './config/jwt'
 
 const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
 
@@ -44,7 +45,7 @@ export const ConfigModuleForRoot = ConfigModule.forRoot({
     PassportModule,
     JwtModule.register({
       secret: jwtConstants.secret,
-      signOptions: { expiresIn: '60s' },
+      signOptions: { expiresIn: jwtConfig.expiresInDefault },
     }),
     TypeOrmModule.forRoot(
       databaseConfig(entitiesRelativePath),

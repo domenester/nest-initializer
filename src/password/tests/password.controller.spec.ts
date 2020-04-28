@@ -10,6 +10,7 @@ import { UserEntity } from '../../users/user.entity';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { defaultAdmin } from '../../scripts/seed/seeders/user/faker';
 import UserMocks from '../../users/tests/mocks'
+import { JwtModuleRegister } from '../password.module';
 
 describe('Auth Controller', () => {
   let controller: PasswordController;
@@ -21,7 +22,8 @@ describe('Auth Controller', () => {
         ConfigModule.forRoot({
           envFilePath: '.env',
         }),
-        MailerModuleForRoot
+        MailerModuleForRoot,
+        JwtModuleRegister
       ],
       controllers: [ PasswordController ],
       providers: [
