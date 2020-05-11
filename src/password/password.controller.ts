@@ -14,6 +14,8 @@ import { ValidationPipe } from '../pipes/validation.pipe';
 import { ResetPasswordDto } from '../dtos';
 import { JwtAuthGuard } from '../auth/strategies/jwt-auth.guard';
 import { JwtService } from '@nestjs/jwt';
+import { requestResetPasswordSchema } from '../validators';
+import { JoiErrorHandling } from '../utils/error-handling';
 
 @Controller('password')
 export class PasswordController {
@@ -27,6 +29,10 @@ export class PasswordController {
   @HttpCode(200)
   @Post('request-reset')
   async requestReset(@Body() { email }) {
+    await requestResetPasswordSchema
+      .validateAsync({ email })
+      .catch( errors => JoiErrorHandling(errors))
+
     const userByEmail = await this.usersService.getByEmail(email)
     if (!userByEmail) throw new BadRequestException('Email not found')
     return this.passwordService.sendResetPasswordLink(email)

@@ -8,3 +8,10 @@ export const resetPasswordSchema =
       email: emailSchema,
       password: passwordSchema
     })
+
+export const requestResetPasswordSchema = 
+    Joi
+      .object()
+      .keys({
+        email: emailSchema,
+      })
