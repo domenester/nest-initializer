@@ -8,7 +8,6 @@ export class EmailRegisteredPipe implements PipeTransform<any> {
   ) {}
 
   async transform(value: any) {
-    console.log('value: ', value);
     const userByEmail = await this.usersService.getByEmail(value.email)
     if (!userByEmail) throw new BadRequestException('Email not found')
     return value;
