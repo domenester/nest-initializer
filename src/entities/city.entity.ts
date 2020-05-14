@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne } from 'typeorm';
-import { EntityBase } from '../interfaces';
+import { EntityBase } from './base.entity';
 import { StateEntity } from './state.entity';
 
 @Entity({name: 'city'})

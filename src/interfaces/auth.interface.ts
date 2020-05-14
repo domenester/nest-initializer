@@ -1,4 +1,4 @@
-import { UserEntity } from "../users/user.entity";
+import { UserEntity } from "../entities";
 
 export interface IAuthLoginResponse {
   access_token: string;

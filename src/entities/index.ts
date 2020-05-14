@@ -1,3 +1,5 @@
-export * from './country.entity'
-export * from './state.entity'
+export * from './base.entity'
 export * from './city.entity'
+export * from './state.entity'
+export * from './country.entity'
+export * from './user.entity'

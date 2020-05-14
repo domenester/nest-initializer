@@ -1,5 +1,5 @@
 import { OneToMany, Column, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "../users/user.entity";
+import { UserEntity } from "./user.entity";
 
 export type IEntityBaseId = number
 
@@ -7,11 +7,11 @@ export class EntityBase {
   @PrimaryGeneratedColumn()
   id: IEntityBaseId;
 
-  @OneToMany( type => UserEntity, user => user.createdBy)
+  @OneToMany( () => UserEntity, user => user)
   @Column({ type: 'integer', nullable: true })
   createdBy: UserEntity;
 
-  @OneToMany( type => UserEntity, user => user.updatedBy)
+  @OneToMany( () => UserEntity, user => user)
   @Column({ type: 'integer', nullable: true })
   updatedBy: UserEntity;
 

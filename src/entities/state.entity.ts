@@ -1,5 +1,5 @@
 import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { EntityBase } from '../interfaces';
+import { EntityBase } from './base.entity';
 import { CountryEntity } from './country.entity';
 import { CityEntity } from './city.entity';
 

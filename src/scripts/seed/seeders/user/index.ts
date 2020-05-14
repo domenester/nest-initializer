@@ -1,5 +1,5 @@
 import { Connection } from "typeorm";
-import { UserEntity } from "../../../../users/user.entity";
+import { UserEntity } from "../../../../entities";
 import { Seeder } from "../seeder";
 import UserFaker from "./faker"
 
