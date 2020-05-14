@@ -6,7 +6,7 @@ import { MailerModuleForRoot } from '../../app.module';
 import { PasswordService } from '../password.service';
 import { PasswordController } from '../password.controller';
 import { Repository } from 'typeorm';
-import { UserEntity } from '../../users/user.entity';
+import { UserEntity } from '../../entities';
 import { getRepositoryToken } from '@nestjs/typeorm';
 import { defaultAdmin } from '../../scripts/seed/seeders/user/faker';
 import UserMocks from '../../users/tests/mocks'
