@@ -1,6 +1,6 @@
-import * as faker from 'faker';
-import { CreateUserDto } from '../../../../dtos';
-import * as bcrypt from 'bcrypt';
+import * as faker from 'faker'
+import { CreateUserDto } from '../../../../dtos'
+import * as bcrypt from 'bcrypt'
 
 export const defaultAdminPassword = '12345678'
 
@@ -20,7 +20,7 @@ export default (): Array<CreateUserDto> => {
     const name = faker.name.findName()
     const nameSplit = name.toLowerCase().split(' ')
     const password = faker.internet.password(8)
-    const hash = bcrypt.hashSync(password, 10);
+    const hash = bcrypt.hashSync(password, 10)
     usersFake.push({
       username: `${nameSplit[0]}.${nameSplit[1]}`,
       password: hash,

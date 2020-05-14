@@ -20,7 +20,7 @@ describe('Password Service', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          envFilePath: '.env',
+          envFilePath: '.env'
         }),
         MailerModuleForRoot,
         JwtModuleRegister
@@ -28,7 +28,7 @@ describe('Password Service', () => {
       providers: [
         PasswordService,
         ...userServiceProviders
-      ],
+      ]
     }).compile()
 
     service = module.get<PasswordService>(PasswordService)
@@ -49,7 +49,7 @@ describe('Password Service', () => {
 
   it('should reset password', async () => {
     const { setPassword: { valid: { email, password } } } = UserMocks
-    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never);
+    jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never)
     const response = await service.resetPassword(email, password)
     expect(response.message).toBeDefined()
   })

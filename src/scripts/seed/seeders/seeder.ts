@@ -5,7 +5,7 @@ export abstract class Seeder {
 
   abstract async setup()
 
-  async seed() {
+  async seed(): Promise<void> {
     try {
       await this.setup()
       console.log(success, `${this.name} seeded.`)

@@ -1,20 +1,20 @@
 /* eslint-disable @typescript-eslint/camelcase */
-import { Test, TestingModule } from '@nestjs/testing';
-import { userServiceProviders } from '../../users/tests/providers';
-import { ConfigModule } from '@nestjs/config';
-import { MailerModuleForRoot } from '../../app.module';
-import { PasswordService } from '../password.service';
-import { PasswordController } from '../password.controller';
-import { Repository } from 'typeorm';
-import { UserEntity } from '../../entities';
-import { getRepositoryToken } from '@nestjs/typeorm';
-import { defaultAdmin } from '../../scripts/seed/seeders/user/faker';
+import { Test, TestingModule } from '@nestjs/testing'
+import { userServiceProviders } from '../../users/tests/providers'
+import { ConfigModule } from '@nestjs/config'
+import { MailerModuleForRoot } from '../../app.module'
+import { PasswordService } from '../password.service'
+import { PasswordController } from '../password.controller'
+import { Repository } from 'typeorm'
+import { UserEntity } from '../../entities'
+import { getRepositoryToken } from '@nestjs/typeorm'
+import { defaultAdmin } from '../../scripts/seed/seeders/user/faker'
 import UserMocks from '../../users/tests/mocks'
-import { JwtModuleRegister } from '../password.module';
-import { JwtService } from '@nestjs/jwt';
+import { JwtModuleRegister } from '../password.module'
+import { JwtService } from '@nestjs/jwt'
 
 describe('Auth Controller', () => {
-  let controller: PasswordController;
+  let controller: PasswordController
   let userRepository: Repository<UserEntity>
   let jwtService: JwtService
 
@@ -22,7 +22,7 @@ describe('Auth Controller', () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         ConfigModule.forRoot({
-          envFilePath: '.env',
+          envFilePath: '.env'
         }),
         MailerModuleForRoot,
         JwtModuleRegister
@@ -31,17 +31,17 @@ describe('Auth Controller', () => {
       providers: [
         PasswordService,
         ...userServiceProviders
-      ],
+      ]
     }).compile()
 
-    controller = module.get<PasswordController>(PasswordController);
-    jwtService = module.get<JwtService>(JwtService);
+    controller = module.get<PasswordController>(PasswordController)
+    jwtService = module.get<JwtService>(JwtService)
     userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity))
-  });
+  })
 
   it('should be defined', () => {
-    expect(controller).toBeDefined();
-  });
+    expect(controller).toBeDefined()
+  })
 
   it('should send reset password', async () => {
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
@@ -49,7 +49,7 @@ describe('Auth Controller', () => {
       { email: defaultAdmin.email }
     )
     expect(typeof response.message).toBe('string')
-  });
+  })
 
   it('should reset password', async () => {
     const { setPassword: { valid: { email, password } } } = UserMocks
@@ -61,5 +61,5 @@ describe('Auth Controller', () => {
       { authorization: jwtService.sign({ email }) }
     )
     expect(typeof response.message).toBe('string')
-  });
-});
+  })
+})

@@ -1,5 +1,5 @@
-import * as Joi from "@hapi/joi";
-import { emailSchema, passwordSchema } from "../global";
+import * as Joi from '@hapi/joi'
+import { emailSchema, passwordSchema } from '../global'
 
 export const resetPasswordSchema = 
   Joi
@@ -13,5 +13,5 @@ export const requestResetPasswordSchema =
     Joi
       .object()
       .keys({
-        email: emailSchema,
+        email: emailSchema
       })

@@ -1,4 +1,4 @@
-import { TypeOrmModuleOptions } from '@nestjs/typeorm';
+import { TypeOrmModuleOptions } from '@nestjs/typeorm'
 
 export const typeOrmOptions: TypeOrmModuleOptions = {
   type: 'postgres',
@@ -8,10 +8,10 @@ export const typeOrmOptions: TypeOrmModuleOptions = {
   password: 'postgres',
   database: 'postgres',
   synchronize: true,
-  keepConnectionAlive: true,
+  keepConnectionAlive: true
 }
 
 export default (entitiesRelativePath = '.'): TypeOrmModuleOptions => ({
   ...typeOrmOptions,
-  entities: [`${entitiesRelativePath}/**/*.entity{.ts,.js}`],
-}) as TypeOrmModuleOptions;
+  entities: [`${entitiesRelativePath}/**/*.entity{.ts,.js}`]
+}) as TypeOrmModuleOptions

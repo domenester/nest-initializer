@@ -1,6 +1,6 @@
-import { UserEntity } from "../entities";
+import { UserEntity } from '../entities'
 
-export interface IAuthLoginResponse {
+export interface AuthLoginResponse {
   access_token: string;
   user: UserEntity
 }

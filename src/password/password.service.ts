@@ -1,9 +1,10 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { MailerService } from '@nestjs-modules/mailer';
-import { ConfigService } from '@nestjs/config';
-import * as path from 'path';
-import { UsersService } from '../users/users.service';
-import { JwtService } from '@nestjs/jwt';
+import { Injectable, BadRequestException } from '@nestjs/common'
+import { MailerService } from '@nestjs-modules/mailer'
+import { ConfigService } from '@nestjs/config'
+import * as path from 'path'
+import { UsersService } from '../users/users.service'
+import { JwtService } from '@nestjs/jwt'
+import { MessageResponse } from '../interfaces'
 
 @Injectable()
 export class PasswordService {
@@ -15,7 +16,7 @@ export class PasswordService {
     private jwtService: JwtService
   ) {}
 
-  async sendResetPasswordLink(email: string): Promise<any> {
+  async sendResetPasswordLink(email: string): Promise<MessageResponse> {
     const url = this.configService.get<string>('FRONTEND_URL')
     if (!url) throw new Error('FRONTEND_URL env should be defined')
     const payload = { email }
@@ -30,13 +31,13 @@ export class PasswordService {
         context: {
           email,
           url: `${url}/reset-password?token=${token}`
-        },
+        }
       })
     return { message: 'Link to reset password sent' }
   }
 
   
-  async resetPassword(email: string, password: string): Promise<any> {
+  async resetPassword(email: string, password: string): Promise<MessageResponse> {
     const updated = await this.userService.setPassword(email, password)
     if (!updated) {
       throw new BadRequestException('Problem reseting password')

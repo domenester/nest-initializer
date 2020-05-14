@@ -25,13 +25,13 @@ describe('Auth Service', () => {
       imports: [
         JwtModule.register({
           secret: jwtConstants.secret,
-          signOptions: { expiresIn: '60s' },
-        }),
+          signOptions: { expiresIn: '60s' }
+        })
       ],
       providers: [
         AuthService,
         ...userServiceProviders
-      ],
+      ]
     }).compile()
 
     service = module.get<AuthService>(AuthService)

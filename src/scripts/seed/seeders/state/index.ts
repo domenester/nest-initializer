@@ -1,7 +1,7 @@
-import { Connection } from "typeorm";
-import { Seeder } from "../seeder";
-import { CountryEntity, StateEntity } from "../../../../entities";
-import Countries from "../country/seed";
+import { Connection } from 'typeorm'
+import { Seeder } from '../seeder'
+import { CountryEntity, StateEntity } from '../../../../entities'
+import Countries from '../country/seed'
 
 export class StateSeed extends Seeder {
   constructor(
@@ -12,7 +12,7 @@ export class StateSeed extends Seeder {
 
   name = 'State'
 
-  async setup () {
+  async setup (): Promise<void> {
     const countryRepository = await this.connection.getRepository(CountryEntity)
     const countries = await countryRepository.find()
     const stateRepository = await this.connection.getRepository(StateEntity)
@@ -29,4 +29,4 @@ export class StateSeed extends Seeder {
 
 export const stateSeed = (
   connection: Connection
-) => new StateSeed(connection)
+): StateSeed => new StateSeed(connection)

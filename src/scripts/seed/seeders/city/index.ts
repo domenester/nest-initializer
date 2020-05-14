@@ -1,7 +1,7 @@
-import { Connection } from "typeorm";
-import { Seeder } from "../seeder";
-import { StateEntity, CityEntity } from "../../../../entities";
-import Countries from "../country/seed";
+import { Connection } from 'typeorm'
+import { Seeder } from '../seeder'
+import { StateEntity, CityEntity } from '../../../../entities'
+import Countries from '../country/seed'
 
 export class CitySeed extends Seeder {
   constructor(
@@ -16,16 +16,16 @@ export class CitySeed extends Seeder {
 
   cityByStateInitials: { [key: string]: Array<string> } = {}
 
-  mapCities () {
+  mapCities (): void {
     Countries[this.countryInitialsToSeed].forEach(
       state => this.cityByStateInitials[state.initials] = state.cities
     )
   }
 
-  async setup () {
+  async setup (): Promise<void> {
     const stateRepository = await this.connection.getRepository(StateEntity)
     const cityRepository = await this.connection.getRepository(CityEntity)
-    const states = await stateRepository.find({ relations: ["country"] })
+    const states = await stateRepository.find({ relations: ['country'] })
     await Promise.all(
       states.map(async state => {
         if (state.country.initials !== this.countryInitialsToSeed) {
@@ -42,4 +42,4 @@ export class CitySeed extends Seeder {
 
 export const citySeed = (
   connection: Connection
-) => new CitySeed(connection)
+): CitySeed => new CitySeed(connection)

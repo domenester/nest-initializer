@@ -1,7 +1,7 @@
-import { Entity, Column, ManyToOne, OneToMany } from 'typeorm';
-import { EntityBase } from './base.entity';
-import { CountryEntity } from './country.entity';
-import { CityEntity } from './city.entity';
+import { Entity, Column, ManyToOne, OneToMany } from 'typeorm'
+import { EntityBase } from './base.entity'
+import { CountryEntity } from './country.entity'
+import { CityEntity } from './city.entity'
 
 @Entity({name: 'state'})
 

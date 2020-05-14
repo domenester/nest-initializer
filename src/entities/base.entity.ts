@@ -1,5 +1,5 @@
-import { OneToMany, Column, PrimaryGeneratedColumn } from "typeorm";
-import { UserEntity } from "./_user.entity";
+import { OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { UserEntity } from './_user.entity'
 
 export type IEntityBaseId = number
 

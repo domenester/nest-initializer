@@ -1,6 +1,6 @@
-import { Entity, Column, OneToMany } from 'typeorm';
-import { EntityBase } from './base.entity';
-import { StateEntity } from './state.entity';
+import { Entity, Column, OneToMany } from 'typeorm'
+import { EntityBase } from './base.entity'
+import { StateEntity } from './state.entity'
 
 @Entity({name: 'country'})
 

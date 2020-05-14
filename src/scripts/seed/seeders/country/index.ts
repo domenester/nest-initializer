@@ -1,6 +1,6 @@
-import { Connection } from "typeorm";
-import { Seeder } from "../seeder";
-import { CountryEntity } from "../../../../entities";
+import { Connection } from 'typeorm'
+import { Seeder } from '../seeder'
+import { CountryEntity } from '../../../../entities'
 
 export class CountrySeed extends Seeder {
   constructor(
@@ -11,7 +11,7 @@ export class CountrySeed extends Seeder {
 
   name = 'Country'
 
-  async setup () {
+  async setup (): Promise<void> {
     const countrySeed = [{
       name: 'Brasil',
       initials: 'BR'
@@ -28,4 +28,4 @@ export class CountrySeed extends Seeder {
 
 export const countrySeed = (
   connection: Connection
-) => new CountrySeed(connection)
+): CountrySeed => new CountrySeed(connection)

@@ -1,4 +1,4 @@
-import { UserEntity } from "../../entities";
+import { UserEntity } from '../../entities'
 
 export const loginMock: UserEntity = {
   id: 1,
@@ -7,5 +7,5 @@ export const loginMock: UserEntity = {
   createdAt: new Date(),
   updatedAt: new Date(),
   username: 'admin',
-  email: 'admin@mail.com',
+  email: 'admin@mail.com'
 }

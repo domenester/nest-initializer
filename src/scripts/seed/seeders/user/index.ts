@@ -1,7 +1,7 @@
-import { Connection } from "typeorm";
-import { UserEntity } from "../../../../entities";
-import { Seeder } from "../seeder";
-import UserFaker from "./faker"
+import { Connection } from 'typeorm'
+import { UserEntity } from '../../../../entities'
+import { Seeder } from '../seeder'
+import UserFaker from './faker'
 
 export class UserSeed extends Seeder {
   constructor(
@@ -12,7 +12,7 @@ export class UserSeed extends Seeder {
 
   name = 'User'
 
-  async setup () {
+  async setup (): Promise<void> {
     const userFaked = UserFaker()
     const userRepository = await this.connection.getRepository(UserEntity)
     await  Promise.all(
@@ -26,4 +26,4 @@ export class UserSeed extends Seeder {
 
 export const userSeed = (
   connection: Connection
-) => new UserSeed(connection)
+): UserSeed => new UserSeed(connection)
