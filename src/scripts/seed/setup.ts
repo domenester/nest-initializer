@@ -1,5 +1,5 @@
 import { createConnection, Connection } from "typeorm";
-import Seeders from './seeders'
+import Seeds from './seeders'
 import { Seeder } from "./seeders/seeder";
 import { typeOrmOptions } from "../../config/database.config";
 
@@ -14,8 +14,9 @@ export const setupDatabase = async () => {
   } as any)
 
   console.log('\n Start seeding database:\n')
-  const seeders: Array<(connection: Connection) => Seeder> = Seeders
-  return Promise.all(
-    seeders.map( seeder => seeder(connection).seed() )
-  )
+  const seeders: Array<(connection: Connection) => Seeder> = Seeds
+
+  for (let i = 0; i < seeders.length; i++) {
+    await seeders[i](connection).seed()
+  }
 }
