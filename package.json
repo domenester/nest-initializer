@@ -14,7 +14,7 @@
     "start:debug": "nest start --debug --watch",
     "start:debug:docker": "nest start --debug 0.0.0.0:9229 --watch",
     "start:prod": "node dist/main",
-    "seed": "npm run build && node ./dist/scripts/seed/index.js",
+    "seed": "npm run build && node ./dist/src/scripts/seed/index.js",
     "infra:up": "docker-compose up",
     "infra:down": "docker-compose down",
     "infra:reload": "docker-compose down && docker-compose up --build -V",

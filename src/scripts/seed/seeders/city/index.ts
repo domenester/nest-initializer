@@ -23,8 +23,12 @@ export class CitySeed extends Seeder {
   }
 
   async setup (): Promise<void> {
-    const stateRepository = await this.connection.getRepository(StateEntity)
-    const cityRepository = await this.connection.getRepository(CityEntity)
+    const cityRepository = this.connection.getRepository(CityEntity)
+    const count = await cityRepository.count()
+    if (count > 0) {
+      return console.log(`${this.name} seed already inserted`)
+    }
+    const stateRepository = this.connection.getRepository(StateEntity)
     const states = await stateRepository.find({ relations: ['country'] })
     await Promise.all(
       states.map(async state => {
