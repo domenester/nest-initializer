@@ -14,9 +14,13 @@ export class UsersService {
   ) {}
 
   async getByEmail(email: string): Promise<UserEntity> {
-    return this.userRepository.findOne({
-      where: { email }, order: { updatedAt: 'DESC' }
-    })
+    const userByEmail = await this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .where('user.email = :email', { email })
+      .getOne()
+
+    return userByEmail
   }
 
   async setPassword(email: string, password: string): Promise<boolean> {

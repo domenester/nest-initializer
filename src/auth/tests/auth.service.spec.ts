@@ -9,7 +9,7 @@ import { defaultAdmin, defaultAdminPassword } from '../../scripts/seed/seeders/u
 import { Repository } from 'typeorm'
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { loginMock } from './mocks'
+import { userMock } from '../../../test/mocks/default.mock'
 import * as bcrypt from 'bcrypt'
 
 /**
@@ -54,9 +54,9 @@ describe('Auth Service', () => {
   })
 
   it('should login user', async () => {
-    const userLogged = await service.login(loginMock)
+    const userLogged = await service.login(userMock)
     const { access_token, user } = userLogged
     expect(access_token).toBeDefined()
-    expect(user.email).toEqual(loginMock.email)
+    expect(user.email).toEqual(userMock.email)
   })
 })

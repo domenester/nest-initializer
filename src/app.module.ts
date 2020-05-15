@@ -16,6 +16,8 @@ import { TypeOrmModule } from '@nestjs/typeorm'
 import { PasswordModule } from './password/password.module'
 import databaseConfig from './config/database.config'
 import jwtConfig from './config/jwt'
+import { APP_GUARD } from '@nestjs/core'
+import { RolesGuard } from './guard/roles.guard'
 
 const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
 
@@ -54,6 +56,10 @@ export const ConfigModuleForRoot = ConfigModule.forRoot({
     MailerModuleForRoot
   ],
   controllers: [AppController, AuthController],
-  providers: [AppService, AuthService, JwtStrategy]
+  providers: [
+    AppService,
+    AuthService,
+    JwtStrategy
+  ]
 })
 export class AppModule {}

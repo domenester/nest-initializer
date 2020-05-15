@@ -3,9 +3,10 @@
  * the files at the top is compiled first, and this file has a circular dependencie
  * with bas.entity.ts file.
  */
-import { Entity, Column } from 'typeorm'
+import { Entity, Column, ManyToMany, JoinTable } from 'typeorm'
 import { EntityBase } from '../entities/base.entity'
 import { IsEmail } from 'class-validator'
+import { RoleEntity } from './role.entity'
 
 @Entity({name: 'user'})
 export class UserEntity extends EntityBase {
@@ -16,9 +17,14 @@ export class UserEntity extends EntityBase {
     type: 'varchar',
     unique: true
   })
+
   @IsEmail()
   email: string;
 
   @Column({ type: 'varchar' })
   password?: string;
+
+  @ManyToMany( () => RoleEntity )
+  @JoinTable()
+  roles: Array<RoleEntity | string>;
 }

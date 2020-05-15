@@ -8,16 +8,32 @@ export class EntityBase {
   id: IEntityBaseId;
 
   @OneToMany( () => UserEntity, user => user)
-  @Column({ type: 'integer', nullable: true })
+  @Column({
+    type: 'integer',
+    nullable: true,
+    select: false
+  })
   createdBy: UserEntity;
 
   @OneToMany( () => UserEntity, user => user)
-  @Column({ type: 'integer', nullable: true })
+  @Column({
+    type: 'integer',
+    nullable: true,
+    select: false
+  })
   updatedBy: UserEntity;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    select: false
+  })
   createdAt: Date;
 
-  @Column({ type: 'timestamp', default: () => 'CURRENT_TIMESTAMP' })
+  @Column({
+    type: 'timestamp',
+    default: () => 'CURRENT_TIMESTAMP',
+    select: false
+  })
   updatedAt: Date;
 }

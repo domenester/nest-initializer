@@ -5,7 +5,7 @@ import { userServiceProviders } from '../../users/tests/providers'
 import { AuthService } from '../auth.service'
 import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../constants'
-import { loginMock } from './mocks'
+import { userMock } from '../../../test/mocks/default.mock'
 
 describe('Auth Controller', () => {
   let controller: AuthController
@@ -33,9 +33,9 @@ describe('Auth Controller', () => {
   })
 
   it('should login user', async () => {
-    const userLogged = await controller.login({ user: loginMock })
+    const userLogged = await controller.login({ user: userMock })
     const { access_token, user } = userLogged
     expect(access_token).toBeDefined()
-    expect(user.email).toEqual(loginMock.email)
+    expect(user.email).toEqual(userMock.email)
   })
 })

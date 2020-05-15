@@ -1,5 +1,5 @@
 import { Connection } from 'typeorm'
-import { UserEntity } from '../../../../entities'
+import { UserEntity, RoleEntity } from '../../../../entities'
 import { Seeder } from '../seeder'
 import UserFaker from './faker'
 
@@ -13,8 +13,10 @@ export class UserSeed extends Seeder {
   name = 'User'
 
   async setup (): Promise<void> {
-    const userFaked = UserFaker()
-    const userRepository = await this.connection.getRepository(UserEntity)
+    const roleRepository = this.connection.getRepository(RoleEntity)
+    const roles = await roleRepository.find()
+    const userFaked = UserFaker(roles)
+    const userRepository = this.connection.getRepository(UserEntity)
     await  Promise.all(
       userFaked.map(user => userRepository.save(user))
     ).catch(err => {

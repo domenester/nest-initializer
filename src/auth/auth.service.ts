@@ -24,7 +24,12 @@ export class AuthService {
   }
 
   async login(user: UserEntity): Promise<AuthLoginResponse> {
-    const payload = { email: user.email, sub: user.id }
+    const payload = {
+      id: user.id,
+      email: user.email,
+      roles: user.roles
+    }
+
     return {
       user,
       // eslint-disable-next-line @typescript-eslint/camelcase
