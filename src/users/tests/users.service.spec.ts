@@ -3,12 +3,13 @@ import { UsersService } from '../users.service'
 import UserMocks from './mocks'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { UserEntity } from '../../entities'
-import { Repository } from 'typeorm'
 import { userServiceProviders } from './providers'
+import { MockRepository } from '../../../test/mocks/repository.mock'
+import { userCreateDtoMock } from '../../../test/mocks'
 
 describe('Users Service Tests', () => {
   let service: UsersService
-  let repository: Repository<UserEntity>
+  let repository: MockRepository<UserEntity>
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,7 +19,7 @@ describe('Users Service Tests', () => {
     }).compile()
 
     service = module.get<UsersService>(UsersService)
-    repository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity))
+    repository = module.get<MockRepository<UserEntity>>(getRepositoryToken(UserEntity))
   })
 
   it('should be defined', () => {
@@ -26,17 +27,15 @@ describe('Users Service Tests', () => {
   })
 
   it('should create an user', async () => {
-    const { create: { valid } } = UserMocks
-    jest.spyOn(repository, 'create').mockResolvedValueOnce([valid] as never)
-    const itemCreated = await service.create(valid)
-    expect(itemCreated).toEqual([valid])
+    jest.spyOn(repository, 'save').mockResolvedValueOnce([userCreateDtoMock] as never)
+    const itemCreated = await service.create(userCreateDtoMock)
+    expect(itemCreated).toEqual([userCreateDtoMock])
   })
 
   it('should get user by email', async () => {
-    const { _default } = UserMocks
-    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(_default as never)
-    const userByEmail = await service.getByEmail(_default.email)
-    expect(userByEmail).toEqual(_default)
+    jest.spyOn(repository.queryBuilder, 'getOne').mockResolvedValueOnce(userCreateDtoMock as never)
+    const userByEmail = await service.getByEmail(userCreateDtoMock.email)
+    expect(userByEmail).toEqual(userCreateDtoMock)
   })
 
   it('should set user password', async () => {
@@ -48,7 +47,7 @@ describe('Users Service Tests', () => {
 
   it('should soft delete by email', async () => {
     const { _default } = UserMocks
-    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(_default as never)
+    jest.spyOn(repository.queryBuilder, 'getOne').mockResolvedValueOnce(_default as never)
     jest.spyOn(repository, 'softDelete').mockResolvedValueOnce(_default as never)
     const deleted = await service.delete(_default.email)
     expect(!!deleted).toBe(true)
@@ -56,7 +55,7 @@ describe('Users Service Tests', () => {
 
   it('should restore by email', async () => {
     const { _default } = UserMocks
-    jest.spyOn(repository, 'findOne').mockResolvedValueOnce(_default as never)
+    jest.spyOn(repository.queryBuilder, 'getOne').mockResolvedValueOnce(_default as never)
     jest.spyOn(repository, 'restore').mockResolvedValueOnce(_default as never)
     const restored = await service.restore(_default.email)
     expect(!!restored).toBe(true)

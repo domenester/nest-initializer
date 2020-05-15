@@ -1,4 +1,5 @@
 import { UserEntity, EntityBase, RoleEntity } from '../../src/entities'
+import { CreateUserDto } from '../../src/dtos'
 
 export const baseMock: EntityBase = {
   id: 1,
@@ -13,9 +14,17 @@ export const roleMock: RoleEntity = {
   name: 'owner'
 }
 
-export const userMock: UserEntity = {
+export const userEntityMock: UserEntity = {
   ...baseMock,
   username: 'admin',
   email: 'admin@mail.com',
+  password: '12345678',
   roles: [roleMock]
+}
+
+export const userCreateDtoMock: CreateUserDto = {
+  username: 'admin',
+  email: 'admin@mail.com',
+  password: '12345678',
+  roles: [roleMock.name]
 }

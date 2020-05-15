@@ -1,17 +1,16 @@
 import { IsEmail, IsNotEmpty, MinLength, IsOptional } from 'class-validator'
-import { RoleEntity } from '../../entities';
 
 export class CreateUserDto {
   @IsEmail()
-  email: string;
+  email: string
 
   @IsNotEmpty()
   @MinLength(8)
-  password: string;
+  password: string
 
   @IsNotEmpty()
-  username: string;
+  username: string
 
   @IsOptional()
-  roles?: RoleEntity[]
+  roles?: string[]
 }

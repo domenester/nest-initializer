@@ -26,5 +26,5 @@ export class UserEntity extends EntityBase {
 
   @ManyToMany( () => RoleEntity )
   @JoinTable()
-  roles: Array<RoleEntity | string>;
+  roles: Array<RoleEntity>;
 }

@@ -5,17 +5,17 @@ import { ConfigModule } from '@nestjs/config'
 import { MailerModuleForRoot } from '../../app.module'
 import { PasswordService } from '../password.service'
 import { PasswordController } from '../password.controller'
-import { Repository } from 'typeorm'
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { defaultAdmin } from '../../scripts/seed/seeders/user/faker'
 import UserMocks from '../../users/tests/mocks'
 import { JwtModuleRegister } from '../password.module'
 import { JwtService } from '@nestjs/jwt'
+import { MockRepository } from '../../../test/mocks/repository.mock'
 
 describe('Auth Controller', () => {
   let controller: PasswordController
-  let userRepository: Repository<UserEntity>
+  let userRepository: MockRepository<UserEntity>
   let jwtService: JwtService
 
   beforeEach(async () => {
@@ -36,7 +36,7 @@ describe('Auth Controller', () => {
 
     controller = module.get<PasswordController>(PasswordController)
     jwtService = module.get<JwtService>(JwtService)
-    userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity))
+    userRepository = module.get<MockRepository<UserEntity>>(getRepositoryToken(UserEntity))
   })
 
   it('should be defined', () => {
@@ -44,7 +44,7 @@ describe('Auth Controller', () => {
   })
 
   it('should send reset password', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(defaultAdmin as never)
+    jest.spyOn(userRepository.queryBuilder, 'getOne').mockResolvedValueOnce(defaultAdmin as never)
     const response = await controller.requestReset(
       { email: defaultAdmin.email }
     )
@@ -55,7 +55,7 @@ describe('Auth Controller', () => {
     const { setPassword: { valid: { email, password } } } = UserMocks
     const { create: { valid } } = UserMocks
     jest.spyOn(userRepository, 'update').mockResolvedValueOnce(true as never)
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(valid as never)
+    jest.spyOn(userRepository.queryBuilder, 'getOne').mockResolvedValueOnce(valid as never)
     const response = await controller.reset(
       { password },
       { authorization: jwtService.sign({ email }) }

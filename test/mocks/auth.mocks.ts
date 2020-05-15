@@ -1,4 +1,4 @@
-import { defaultAdmin, defaultAdminPassword } from "../../src/scripts/seed/seeders/user/faker";
+import { userEntityMock } from './default.mock'
 
 export const AuthMocks = {
   authLogin: {
@@ -9,8 +9,8 @@ export const AuthMocks = {
       }
     },
     valid: {
-      email: defaultAdmin.email,
-      password: defaultAdminPassword
+      email: userEntityMock.email,
+      password: userEntityMock.password
     }
   }
 }

@@ -28,7 +28,7 @@ describe('Users Controller', () => {
 
   it('should create an user', async () => {
     const { create: { valid } } = UserMocks
-    jest.spyOn(repository, 'create').mockResolvedValueOnce([valid] as never)
+    jest.spyOn(repository, 'save').mockResolvedValueOnce([valid] as never)
     const userCreated = await controller.create(valid)
     expect(userCreated).toEqual([valid])
   })

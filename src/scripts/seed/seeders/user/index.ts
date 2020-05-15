@@ -15,10 +15,17 @@ export class UserSeed extends Seeder {
   async setup (): Promise<void> {
     const roleRepository = this.connection.getRepository(RoleEntity)
     const roles = await roleRepository.find()
-    const userFaked = UserFaker(roles)
+    const userFaked = UserFaker()
     const userRepository = this.connection.getRepository(UserEntity)
     await  Promise.all(
-      userFaked.map(user => userRepository.save(user))
+      userFaked.map(
+        user => userRepository.save({
+          ...user,
+          roles: roles.filter(
+            role => user.roles.includes(role.name)
+          )
+        })
+      )
     ).catch(err => {
       console.log('Error seeding users: ', err)
     })

@@ -1,19 +1,12 @@
+import { userCreateDtoMock } from '../../../test/mocks'
+
 export default {
-  _default: {
-    username: 'username',
-    password: '1234',
-    email: 'user@mail.com'
-  },
+  _default: userCreateDtoMock,
   create: {
-    valid: {
-      username: 'username',
-      password: '1234',
-      email: 'user@mail.com'
-    },
+    valid: userCreateDtoMock,
     invalid: {
       email: {
-        username: 'username',
-        password: '12345678',
+        ...userCreateDtoMock,
         email: 'invalidemail'
       }
     }

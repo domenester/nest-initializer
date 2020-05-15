@@ -1,6 +1,6 @@
-import { Injectable } from '@nestjs/common'
-import { Repository, UpdateResult } from 'typeorm'
-import { UserEntity } from '../entities'
+import { Injectable, BadRequestException } from '@nestjs/common'
+import { Repository, UpdateResult, In } from 'typeorm'
+import { UserEntity, RoleEntity } from '../entities'
 import { InjectRepository } from '@nestjs/typeorm'
 import { CreateUserDto } from '../dtos'
 import * as bcrypt from 'bcrypt'
@@ -11,16 +11,16 @@ export class UsersService {
   constructor(
     @InjectRepository(UserEntity)
     private readonly userRepository: Repository<UserEntity>,
+    @InjectRepository(RoleEntity)
+    private readonly roleRepository: Repository<RoleEntity>
   ) {}
 
   async getByEmail(email: string): Promise<UserEntity> {
-    const userByEmail = await this.userRepository
+    return this.userRepository
       .createQueryBuilder('user')
       .leftJoinAndSelect('user.roles', 'role')
       .where('user.email = :email', { email })
       .getOne()
-
-    return userByEmail
   }
 
   async setPassword(email: string, password: string): Promise<boolean> {
@@ -32,7 +32,14 @@ export class UsersService {
   }
 
   async create(user: CreateUserDto): Promise<UserEntity> {
-    return this.userRepository.create({...user, username: user.email})
+    const roles = await this.roleRepository.find({
+      where: { name: In(user.roles) }
+    })
+    return this.userRepository.save({...user, roles })
+      .catch((error) => {
+        if (error.code === '23505') throw new BadRequestException('User already registered')
+        return error
+      })
   }
 
   async delete(email: string): Promise<UpdateResult> {

@@ -6,11 +6,11 @@ import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../constants'
 import { userServiceProviders } from '../../users/tests/providers'
 import { defaultAdmin, defaultAdminPassword } from '../../scripts/seed/seeders/user/faker'
-import { Repository } from 'typeorm'
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
-import { userMock } from '../../../test/mocks/default.mock'
+import { userEntityMock } from '../../../test/mocks/default.mock'
 import * as bcrypt from 'bcrypt'
+import { MockRepository } from '../../../test/mocks/repository.mock'
 
 /**
  * TODO: Implement auth.service tests
@@ -18,7 +18,7 @@ import * as bcrypt from 'bcrypt'
 
 describe('Auth Service', () => {
   let service: AuthService
-  let userRepository: Repository<UserEntity>
+  let userRepository: MockRepository<UserEntity>
   
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -35,7 +35,7 @@ describe('Auth Service', () => {
     }).compile()
 
     service = module.get<AuthService>(AuthService)
-    userRepository = module.get<Repository<UserEntity>>(getRepositoryToken(UserEntity))
+    userRepository = module.get<MockRepository<UserEntity>>(getRepositoryToken(UserEntity))
   })
 
   it('should be defined', () => {
@@ -43,9 +43,10 @@ describe('Auth Service', () => {
   })
 
   it('should validate user', async () => {
-    jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce({
-      ...defaultAdmin, password: bcrypt.hashSync(defaultAdminPassword, 10)
-    } as never)
+    jest.spyOn(userRepository.queryBuilder, 'getOne')
+      .mockResolvedValueOnce({
+        ...userEntityMock, password: bcrypt.hashSync(userEntityMock.password, 10)
+      } as never)
     const userValidated = await service.validateUser(
       defaultAdmin.email, defaultAdminPassword
     )
@@ -54,9 +55,9 @@ describe('Auth Service', () => {
   })
 
   it('should login user', async () => {
-    const userLogged = await service.login(userMock)
+    const userLogged = await service.login(userEntityMock)
     const { access_token, user } = userLogged
     expect(access_token).toBeDefined()
-    expect(user.email).toEqual(userMock.email)
+    expect(user.email).toEqual(userEntityMock.email)
   })
 })

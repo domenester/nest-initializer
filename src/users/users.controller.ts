@@ -14,7 +14,7 @@ export class UsersController {
     private userService: UsersService
   ) {}
 
-  @Roles('admin')
+  @Roles('owner')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
   @UsePipes(new ValidationPipe())
