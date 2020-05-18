@@ -13,6 +13,7 @@ import { jwtConstants } from './auth/constants'
 import { JwtStrategy } from './auth/strategies/jwt.strategy'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PasswordModule } from './password/password.module'
+import { RegisterModule } from './register/register.module';
 import databaseConfig from './config/database.config'
 import jwtConfig from './config/jwt'
 
@@ -50,7 +51,8 @@ export const ConfigModuleForRoot = ConfigModule.forRoot({
       databaseConfig(entitiesRelativePath),
     ),
     PasswordModule,
-    MailerModuleForRoot
+    MailerModuleForRoot,
+    RegisterModule
   ],
   controllers: [AppController, AuthController],
   providers: [

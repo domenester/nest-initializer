@@ -23,6 +23,11 @@ export class UsersService {
       .getOne()
   }
 
+  async isEmailRegistered(email: string): Promise<boolean> {
+    const exists = await this.userRepository.findOne({ email })
+    return !!exists
+  }
+
   async setPassword(email: string, password: string): Promise<boolean> {
     const hash = bcrypt.hashSync(password, 10)
     const userUpdated = await this.userRepository.update(
