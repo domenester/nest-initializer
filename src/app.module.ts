@@ -14,6 +14,7 @@ import { JwtStrategy } from './auth/strategies/jwt.strategy'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PasswordModule } from './password/password.module'
 import { RegisterModule } from './register/register.module';
+import { EventsGateway } from './events.gateway';
 import databaseConfig from './config/database.config'
 import jwtConfig from './config/jwt'
 
@@ -58,7 +59,8 @@ export const ConfigModuleForRoot = ConfigModule.forRoot({
   providers: [
     AppService,
     AuthService,
-    JwtStrategy
+    JwtStrategy,
+    EventsGateway
   ]
 })
 export class AppModule {}
