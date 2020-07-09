@@ -1,5 +1,7 @@
 import { userCreateDtoMock } from '../../../test/mocks'
 
+const { password, ...userCreateDtoMockWithoutPassword } = userCreateDtoMock
+
 export default {
   _default: userCreateDtoMock,
   create: {
@@ -9,6 +11,12 @@ export default {
         ...userCreateDtoMock,
         email: 'invalidemail'
       }
+    }
+  },
+  list: {
+    valid: {
+      count: 1,
+      rows: [ userCreateDtoMockWithoutPassword ]
     }
   },
   setPassword: {

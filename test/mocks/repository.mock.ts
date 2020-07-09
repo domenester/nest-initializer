@@ -13,6 +13,7 @@ export class MockRepository<T> {
   public findOne = jest.fn();
   public findOneOrFail = jest.fn();
   public find = jest.fn();
+  public findAndCount = jest.fn();
   public getMany = jest.fn();
 
   public queryBuilder = {

@@ -6,6 +6,7 @@ import { UserEntity } from '../../entities'
 import { userServiceProviders } from './providers'
 import { MockRepository } from '../../../test/mocks/repository.mock'
 import { userCreateDtoMock } from '../../../test/mocks'
+import { ConfigModuleForRoot } from '../../app.module'
 
 describe('Users Service Tests', () => {
   let service: UsersService
@@ -13,6 +14,7 @@ describe('Users Service Tests', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+      imports: [ConfigModuleForRoot],
       providers: [
         ...userServiceProviders
       ]
@@ -36,6 +38,14 @@ describe('Users Service Tests', () => {
     jest.spyOn(repository.queryBuilder, 'getOne').mockResolvedValueOnce(userCreateDtoMock as never)
     const userByEmail = await service.getByEmail(userCreateDtoMock.email)
     expect(userByEmail).toEqual(userCreateDtoMock)
+  })
+
+  it('should list users', async () => {
+    const { list: { valid } } = UserMocks
+    const { password, ...rest } = userCreateDtoMock
+    jest.spyOn(repository, 'findAndCount').mockResolvedValueOnce([[rest], 1])
+    const list = await service.list({take: 10, skip: 0})
+    expect(list).toEqual(valid)
   })
 
   it('should set user password', async () => {
