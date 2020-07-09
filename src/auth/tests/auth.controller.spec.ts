@@ -6,6 +6,7 @@ import { AuthService } from '../auth.service'
 import { JwtModule } from '@nestjs/jwt'
 import { jwtConstants } from '../constants'
 import { userEntityMock } from '../../../test/mocks/default.mock'
+import { ConfigModuleForRoot } from '../../app.module'
 
 describe('Auth Controller', () => {
   let controller: AuthController
@@ -16,7 +17,8 @@ describe('Auth Controller', () => {
         JwtModule.register({
           secret: jwtConstants.secret,
           signOptions: { expiresIn: '60s' }
-        })
+        }),
+        ConfigModuleForRoot
       ],
       controllers: [ AuthController ],
       providers: [

@@ -11,6 +11,7 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { userEntityMock } from '../../../test/mocks/default.mock'
 import * as bcrypt from 'bcrypt'
 import { MockRepository } from '../../../test/mocks/repository.mock'
+import { ConfigModuleForRoot } from '../../app.module'
 
 /**
  * TODO: Implement auth.service tests
@@ -26,7 +27,8 @@ describe('Auth Service', () => {
         JwtModule.register({
           secret: jwtConstants.secret,
           signOptions: { expiresIn: '60s' }
-        })
+        }),
+        ConfigModuleForRoot
       ],
       providers: [
         AuthService,
