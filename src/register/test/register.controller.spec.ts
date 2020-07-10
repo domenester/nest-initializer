@@ -31,7 +31,7 @@ describe('Auth Controller', () => {
   it('should register user', async () => {
     const userToRegister = { email: 'admin2@mail.com', password: '12345678' }
     jest.spyOn(userRepository, 'findOne').mockResolvedValueOnce(undefined as never)
-    jest.spyOn(userRepository, 'save').mockResolvedValueOnce(userToRegister as never)
+    jest.spyOn(userRepository, 'save').mockResolvedValueOnce([userToRegister] as never)
     const response = await controller.register(
       { email: userToRegister.email, password: userToRegister.email }
     )

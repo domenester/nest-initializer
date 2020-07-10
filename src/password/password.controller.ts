@@ -14,7 +14,7 @@ import { ValidationPipe } from '../pipes/validation.pipe'
 import { ResetPasswordDto, RequestResetPasswordDto } from '../dtos'
 import { JwtAuthGuard } from '../auth/strategies/jwt-auth.guard'
 import { JwtService } from '@nestjs/jwt'
-import { MessageResponse } from '../interfaces'
+import { ApiResponse } from '../interfaces'
 
 @Controller('password')
 export class PasswordController {
@@ -30,7 +30,7 @@ export class PasswordController {
   @UsePipes(new ValidationPipe())
   async requestReset(
     @Body() { email }: RequestResetPasswordDto
-  ): Promise<MessageResponse> {
+  ): Promise<ApiResponse> {
     const userByEmail = await this.usersService.getByEmail(email)
     if (!userByEmail) throw new BadRequestException('Email not found')
     return this.passwordService.sendResetPasswordLink(email)
@@ -43,7 +43,7 @@ export class PasswordController {
   async reset(
     @Body() { password }: ResetPasswordDto,
     @Headers() { authorization }
-  ): Promise<MessageResponse> {
+  ): Promise<ApiResponse> {
     const token = authorization.replace('Bearer ', '')
     const { email } = this.jwtService.verify(token)
     const userByEmail = await this.usersService.getByEmail(email)

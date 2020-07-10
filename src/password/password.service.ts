@@ -4,7 +4,7 @@ import { ConfigService } from '@nestjs/config'
 import * as path from 'path'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
-import { MessageResponse } from '../interfaces'
+import { ApiResponse } from '../interfaces'
 
 @Injectable()
 export class PasswordService {
@@ -16,7 +16,7 @@ export class PasswordService {
     private jwtService: JwtService
   ) {}
 
-  async sendResetPasswordLink(email: string): Promise<MessageResponse> {
+  async sendResetPasswordLink(email: string): Promise<ApiResponse> {
     const url = this.configService.get<string>('FRONTEND_URL')
     if (!url) throw new Error('FRONTEND_URL env should be defined')
     const payload = { email }
@@ -37,7 +37,7 @@ export class PasswordService {
   }
 
   
-  async resetPassword(email: string, password: string): Promise<MessageResponse> {
+  async resetPassword(email: string, password: string): Promise<ApiResponse> {
     const updated = await this.userService.setPassword(email, password)
     if (!updated) {
       throw new BadRequestException('Problem reseting password')

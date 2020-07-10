@@ -31,7 +31,8 @@ describe('Users Service Tests', () => {
   it('should create an user', async () => {
     jest.spyOn(repository, 'save').mockResolvedValueOnce([userCreateDtoMock] as never)
     const itemCreated = await service.create(userCreateDtoMock)
-    expect(itemCreated).toEqual([userCreateDtoMock])
+    const { password, ...rest } = userCreateDtoMock
+    expect(itemCreated).toEqual([rest])
   })
 
   it('should get user by email', async () => {

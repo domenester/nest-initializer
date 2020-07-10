@@ -55,8 +55,12 @@ export class UsersService {
     })
   }
 
+  hashfyPassword(password: string): string {
+    return bcrypt.hashSync(password, 10)
+  }
+
   async setPassword(email: string, password: string): Promise<boolean> {
-    const hash = bcrypt.hashSync(password, 10)
+    const hash = this.hashfyPassword(password)
     const userUpdated = await this.userRepository.update(
       { email }, { password: hash }
     )
@@ -67,11 +71,20 @@ export class UsersService {
     const roles = await this.roleRepository.find({
       where: { name: In(user.roles) }
     })
-    return this.userRepository.save({...user, roles })
-      .catch((error) => {
-        if (error.code === '23505') throw new BadRequestException('User already registered')
-        return error
-      })
+
+    const userCreated = await this.userRepository.save({
+      ...user,
+      password: this.hashfyPassword(user.password),
+      roles
+    }).catch((error) => {
+      if (error.code === '23505') throw new BadRequestException('User already registered')
+      return error
+    })
+
+    return userCreated.map( user => {
+      const { password, ...rest } = user
+      return rest
+    })
   }
 
   async delete(email: string): Promise<UpdateResult> {

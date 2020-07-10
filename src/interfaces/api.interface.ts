@@ -1,3 +1,4 @@
-export interface MessageResponse {
+export interface ApiResponse {
   message: string;
+  data?: unknown;
 }

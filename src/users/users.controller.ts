@@ -7,6 +7,7 @@ import { UserEntity } from '../entities'
 import { UpdateResult } from 'typeorm'
 import { Roles } from '../decorator/roles.decorator'
 import { RolesGuard } from '../guard/roles.guard'
+import { ApiResponse } from '../interfaces'
 
 @Controller('users')
 export class UsersController {
@@ -18,8 +19,12 @@ export class UsersController {
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('create')
   @UsePipes(new ValidationPipe())
-  async create(@Body() body: CreateUserDto): Promise<UserEntity> {
-    return this.userService.create(body)
+  async create(@Body() body: CreateUserDto): Promise<ApiResponse> {
+    const userCreated = await this.userService.create(body)
+    return {
+      message: 'Usuário criado com sucesso',
+      data: userCreated
+    }
   }
 
   @UseGuards(JwtAuthGuard, RolesGuard)

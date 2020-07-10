@@ -1,5 +1,5 @@
 import { Controller, HttpCode, Post, Body, BadRequestException } from '@nestjs/common'
-import { MessageResponse } from '../interfaces'
+import { ApiResponse } from '../interfaces'
 import { UsersService } from '../users/users.service'
 
 @Controller('register')
@@ -11,7 +11,7 @@ export class RegisterController {
 
   @HttpCode(200)
   @Post()
-  async register(@Body() { email, password }): Promise<MessageResponse> {
+  async register(@Body() { email, password }): Promise<ApiResponse> {
     const isEmailRegistered = await this.userService.isEmailRegistered(email)
     if (isEmailRegistered) {
       throw new BadRequestException('Email already registered')
