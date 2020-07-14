@@ -1,4 +1,4 @@
-import { Min, Max } from 'class-validator'
+import { Min, Max, IsOptional } from 'class-validator'
 
 export class ListDto {
   @Min(0)
@@ -7,4 +7,7 @@ export class ListDto {
 
   @Min(0)
   skip: number
+
+  @IsOptional()
+  filter: string
 }

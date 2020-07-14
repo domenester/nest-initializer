@@ -1,8 +1,12 @@
 import { Injectable, BadRequestException } from '@nestjs/common'
-import { Repository, UpdateResult, In } from 'typeorm'
+import { Repository, UpdateResult, In, Like } from 'typeorm'
 import { UserEntity, RoleEntity } from '../entities'
 import { InjectRepository } from '@nestjs/typeorm'
-import { CreateUserDto, ListDto } from '../dtos'
+import {
+  CreateUserDto,
+  UpdateUserDto,
+  ListDto
+} from '../dtos'
 import * as bcrypt from 'bcrypt'
 import { ConfigService } from '@nestjs/config'
 
@@ -39,9 +43,19 @@ export class UsersService {
     rows: UserEntity[],
     count: number
   }> {
+    const { filter } = options
     const take = this.configService.get<string>('PAGINATION')
     return this.userRepository.findAndCount({
       order: { email: 'ASC' },
+      ...(
+        filter && {
+          where : [
+            { name : Like(`%${filter}%`) },
+            { email : Like(`%${filter}%`) },
+            { username : Like(`%${filter}%`) }
+          ]
+        }
+      ),
       take: options.take || +take,
       skip: options.skip || 0
     }).then(response => {
@@ -80,11 +94,19 @@ export class UsersService {
       if (error.code === '23505') throw new BadRequestException('User already registered')
       return error
     })
+    const { password, ...rest } = userCreated
+    return rest
+  }
 
-    return userCreated.map( user => {
-      const { password, ...rest } = user
-      return rest
-    })
+  async update(user: UpdateUserDto): Promise<UserEntity> {
+    let roles: RoleEntity[] = []
+    if (user.roles) {
+      roles = await this.roleRepository.find({
+        where: { name: In(user.roles) }
+      })
+    }
+    const newUser = { ...user, ...(roles.length && { roles }) }
+    return this.userRepository.save({ ...newUser })
   }
 
   async delete(email: string): Promise<UpdateResult> {

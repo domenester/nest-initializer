@@ -30,9 +30,16 @@ describe('Users Controller', () => {
 
   it('should create an user', async () => {
     const { create: { valid } } = UserMocks
-    jest.spyOn(repository, 'save').mockResolvedValueOnce([valid] as never)
+    jest.spyOn(repository, 'save').mockResolvedValueOnce(valid as never)
     const userCreated = await controller.create(valid)
     const { password, ...rest } = valid
-    expect(userCreated).toEqual({data: [rest], message: 'Usuário criado com sucesso'})
+    expect(userCreated).toEqual({data: rest, message: 'Usuário criado com sucesso'})
+  })
+
+  it('should update an user', async () => {
+    const { update: { valid } } = UserMocks
+    jest.spyOn(repository, 'save').mockResolvedValueOnce([valid] as never)
+    const userUpdated = await controller.update(valid)
+    expect(userUpdated).toEqual({data: [valid], message: 'Usuário atualizado com sucesso'})
   })
 })

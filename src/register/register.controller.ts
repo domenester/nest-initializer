@@ -18,7 +18,11 @@ export class RegisterController {
     }
 
     await this.userService.create({
-      username: email, email, password, roles: ['user']
+      username: email,
+      email,
+      password,
+      roles: ['user'],
+      name: email
     })
 
     return { message: 'User registered successfuly' }

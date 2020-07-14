@@ -5,7 +5,7 @@ import { getRepositoryToken } from '@nestjs/typeorm'
 import { UserEntity } from '../../entities'
 import { userServiceProviders } from './providers'
 import { MockRepository } from '../../../test/mocks/repository.mock'
-import { userCreateDtoMock } from '../../../test/mocks'
+import { userCreateDtoMock, userUpdateDtoMock } from '../../../test/mocks'
 import { ConfigModuleForRoot } from '../../app.module'
 
 describe('Users Service Tests', () => {
@@ -29,10 +29,10 @@ describe('Users Service Tests', () => {
   })
 
   it('should create an user', async () => {
-    jest.spyOn(repository, 'save').mockResolvedValueOnce([userCreateDtoMock] as never)
+    jest.spyOn(repository, 'save').mockResolvedValueOnce(userCreateDtoMock as never)
     const itemCreated = await service.create(userCreateDtoMock)
     const { password, ...rest } = userCreateDtoMock
-    expect(itemCreated).toEqual([rest])
+    expect(itemCreated).toEqual(rest)
   })
 
   it('should get user by email', async () => {
@@ -47,6 +47,12 @@ describe('Users Service Tests', () => {
     jest.spyOn(repository, 'findAndCount').mockResolvedValueOnce([[rest], 1])
     const list = await service.list({take: 10, skip: 0})
     expect(list).toEqual(valid)
+  })
+
+  it('should update user', async () => {
+    jest.spyOn(repository, 'save').mockResolvedValueOnce([userUpdateDtoMock] as never)
+    const userUpdated = await service.update(userUpdateDtoMock)
+    expect(userUpdated).toEqual([userUpdateDtoMock])
   })
 
   it('should set user password', async () => {

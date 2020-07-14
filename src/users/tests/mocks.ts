@@ -1,4 +1,4 @@
-import { userCreateDtoMock } from '../../../test/mocks'
+import { userCreateDtoMock, userUpdateDtoMock } from '../../../test/mocks'
 
 const { password, ...userCreateDtoMockWithoutPassword } = userCreateDtoMock
 
@@ -12,6 +12,9 @@ export default {
         email: 'invalidemail'
       }
     }
+  },
+  update: {
+    valid: userUpdateDtoMock
   },
   list: {
     valid: {

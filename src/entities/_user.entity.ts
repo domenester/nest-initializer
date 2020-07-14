@@ -22,6 +22,9 @@ export class UserEntity extends EntityBase {
   email: string;
 
   @Column({ type: 'varchar' })
+  name: string;
+
+  @Column({ type: 'varchar' })
   password?: string;
 
   @ManyToMany( () => RoleEntity )

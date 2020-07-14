@@ -7,7 +7,8 @@ export const defaultAdminPassword = '12345678'
 export const defaultAdmin = {
   username: 'admin',
   password: defaultAdminPassword,
-  email: 'admin@mail.com'
+  email: 'admin@mail.com',
+  name: 'Administrador'
 }
 
 export default (): Array<CreateUserDto> => {
@@ -26,6 +27,7 @@ export default (): Array<CreateUserDto> => {
       username: `${nameSplit[0]}.${nameSplit[1]}`,
       password: hash,
       email: faker.internet.email(nameSplit[0], nameSplit[1]),
+      name,
       roles: ['user']
     })
   }
