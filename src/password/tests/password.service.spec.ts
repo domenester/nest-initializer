@@ -7,10 +7,10 @@ import { Repository } from 'typeorm'
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { PasswordService } from '../password.service'
-import { ConfigModule } from '@nestjs/config'
 import { MailerModuleForRoot } from '../../app.module'
 import UserMocks from '../../users/tests/mocks'
 import { JwtModuleRegister } from '../password.module'
+import { ConfigModuleForRoot } from '../../config/module.config'
 
 describe('Password Service', () => {
   let service: PasswordService
@@ -19,9 +19,7 @@ describe('Password Service', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot({
-          envFilePath: '.env'
-        }),
+        ConfigModuleForRoot(),
         MailerModuleForRoot,
         JwtModuleRegister
       ],

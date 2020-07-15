@@ -6,7 +6,7 @@ import { UserEntity } from '../../entities'
 import { userServiceProviders } from './providers'
 import { MockRepository } from '../../../test/mocks/repository.mock'
 import { userCreateDtoMock, userUpdateDtoMock } from '../../../test/mocks'
-import { ConfigModuleForRoot } from '../../app.module'
+import { ConfigModuleForRoot } from '../../config/module.config'
 
 describe('Users Service Tests', () => {
   let service: UsersService
@@ -14,7 +14,7 @@ describe('Users Service Tests', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ConfigModuleForRoot],
+      imports: [ConfigModuleForRoot()],
       providers: [
         ...userServiceProviders
       ]

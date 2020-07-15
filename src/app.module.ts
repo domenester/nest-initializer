@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common'
 import { PugAdapter, MailerModule } from '@nestjs-modules/mailer'
-import { ConfigModule } from '@nestjs/config'
 import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { AuthController } from './auth/auth.controller'
@@ -16,6 +15,7 @@ import { PasswordModule } from './password/password.module'
 import { RegisterModule } from './register/register.module'
 import databaseConfig from './config/database.config'
 import jwtConfig from './config/jwt'
+import { ConfigModuleForRoot } from './config/module.config'
 
 const { NODE_ENV } = process.env
 
@@ -35,13 +35,9 @@ export const MailerModuleForRoot = MailerModule.forRoot({
   }
 })
 
-export const ConfigModuleForRoot = ConfigModule.forRoot({
-  envFilePath: '../.env'
-})
-
 @Module({
   imports: [
-    ConfigModuleForRoot,
+    ConfigModuleForRoot(),
     AuthModule,
     UsersModule,
     PassportModule,

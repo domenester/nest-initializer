@@ -1,7 +1,6 @@
 /* eslint-disable @typescript-eslint/camelcase */
 import { Test, TestingModule } from '@nestjs/testing'
 import { userServiceProviders } from '../../users/tests/providers'
-import { ConfigModule } from '@nestjs/config'
 import { MailerModuleForRoot } from '../../app.module'
 import { PasswordService } from '../password.service'
 import { PasswordController } from '../password.controller'
@@ -12,6 +11,7 @@ import UserMocks from '../../users/tests/mocks'
 import { JwtModuleRegister } from '../password.module'
 import { JwtService } from '@nestjs/jwt'
 import { MockRepository } from '../../../test/mocks/repository.mock'
+import { ConfigModuleForRoot } from '../../config/module.config'
 
 describe('Auth Controller', () => {
   let controller: PasswordController
@@ -21,9 +21,7 @@ describe('Auth Controller', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        ConfigModule.forRoot({
-          envFilePath: '.env'
-        }),
+        ConfigModuleForRoot(),
         MailerModuleForRoot,
         JwtModuleRegister
       ],

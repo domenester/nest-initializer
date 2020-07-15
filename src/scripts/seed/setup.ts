@@ -1,7 +1,7 @@
 import { createConnection, Connection, ConnectionOptions } from 'typeorm'
 import Seeds from './seeders'
 import { Seeder } from './seeders/seeder'
-import { typeOrmOptions } from '../../config/database.config'
+import typeOrmOptions from '../../config/database.config'
 
 export const setupDatabase = async (): Promise<void> => {
   if (!process.env.FAKER_LENGTH) {
@@ -9,7 +9,7 @@ export const setupDatabase = async (): Promise<void> => {
   }
 
   const connection = await createConnection({
-    ...typeOrmOptions,
+    ...typeOrmOptions(),
     entities: ['./**/*.entity.js']
   } as ConnectionOptions)
 

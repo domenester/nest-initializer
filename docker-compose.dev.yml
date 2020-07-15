@@ -1,17 +1,6 @@
 version: '3.7'
 
 services:
-  application:
-    container_name: application
-    build: .
-    ports:
-      - ${SERVER_PORT}:${SERVER_PORT}
-      - 9229:9229
-    env_file:
-      - .env
-    depends_on:
-      - database
-
   database:
     container_name: postgres
     image: postgres:12.2

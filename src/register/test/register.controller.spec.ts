@@ -5,7 +5,7 @@ import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { MockRepository } from '../../../test/mocks/repository.mock'
 import { RegisterController } from '../register.controller'
-import { ConfigModuleForRoot } from '../../app.module'
+import { ConfigModuleForRoot } from '../../config/module.config'
 
 describe('Auth Controller', () => {
   let controller: RegisterController
@@ -13,7 +13,7 @@ describe('Auth Controller', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ ConfigModuleForRoot ],
+      imports: [ ConfigModuleForRoot() ],
       controllers: [ RegisterController ],
       providers: [
         ...userServiceProviders

@@ -3,12 +3,10 @@ import { UsersService } from './users.service'
 import { UserEntity, RoleEntity } from '../entities'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { UsersController } from './users.controller'
-import { ConfigModule } from '@nestjs/config'
+import { ConfigModuleForRoot } from '../config/module.config'
 
 export const userModuleImports = [
-  ConfigModule.forRoot({
-    envFilePath: '.env'
-  }),
+  ConfigModuleForRoot(),
   TypeOrmModule.forFeature([
     UserEntity,
     RoleEntity
