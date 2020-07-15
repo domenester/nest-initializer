@@ -1,7 +1,7 @@
-import { Injectable } from '@nestjs/common'
+import { Injectable, InternalServerErrorException } from '@nestjs/common'
 import { UsersService } from '../users/users.service'
 import { JwtService } from '@nestjs/jwt'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import { UserEntity } from '../entities'
 import { AuthLoginResponse } from '../interfaces'
 
@@ -13,13 +13,18 @@ export class AuthService {
   ) {}
 
   async validateUser(email: string, password: string): Promise<UserEntity> {
-    const user = await this.usersService.getByEmail(email)
-    if (!user) { return }
-    const validPassword = bcrypt.compareSync(password, user.password)
-    if (user && validPassword) {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { password, ...result } = user
-      return result
+    try {
+      const user = await this.usersService.getByEmail(email)
+      if (!user) { return }
+      const validPassword = bcrypt.compareSync(password, user.password)
+      if (user && validPassword) {
+        // eslint-disable-next-line @typescript-eslint/no-unused-vars
+        const { password, ...result } = user
+        return result
+      }
+    } catch (err) {
+      console.log('ERROR VALIDATING USER: ', err)
+      throw new InternalServerErrorException(err, 'Erro ao validar usuário')
     }
   }
 

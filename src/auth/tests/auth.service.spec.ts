@@ -9,7 +9,7 @@ import { defaultAdmin, defaultAdminPassword } from '../../scripts/seed/seeders/u
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { userEntityMock } from '../../../test/mocks/default.mock'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import { MockRepository } from '../../../test/mocks/repository.mock'
 import { ConfigModuleForRoot } from '../../config/module.config'
 

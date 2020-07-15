@@ -7,7 +7,7 @@ import {
   UpdateUserDto,
   ListDto
 } from '../dtos'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 import { ConfigService } from '@nestjs/config'
 
 @Injectable()

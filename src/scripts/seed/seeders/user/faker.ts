@@ -1,6 +1,6 @@
 import * as faker from 'faker'
 import { CreateUserDto } from '../../../../dtos'
-import * as bcrypt from 'bcrypt'
+import * as bcrypt from 'bcryptjs'
 
 export const defaultAdminPassword = '12345678'
 

@@ -8,6 +8,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({transform: true}))
   app.enableCors()
   const { SERVER_PORT } = process.env
-  await app.listen(+SERVER_PORT, '0.0.0.0')
+  const server = await app.listen(+SERVER_PORT, '0.0.0.0')
+  server.setTimeout(10000)
 }
 bootstrap()
