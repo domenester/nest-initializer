@@ -1,26 +1,29 @@
 version: '3.7'
 
 services:
-  redis:
-    container_name: redis
-    image: redis:5
-    networks:
-      - webnet
-  postgres:
+  # application:
+  #   container_name: application
+  #   build: .
+  #   ports:
+  #     - ${SERVER_PORT}:${SERVER_PORT}
+  #     - 9229:9229
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - database
+
+  database:
     container_name: postgres
     image: postgres:12.2
-    networks:
-      - webnet
     environment:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_USER: ${DB_USERNAME}
       POSTGRES_DB: ${DB_DATABASE_NAME}
       PG_DATA: /var/lib/postgresql/data
     ports:
-      - 5432:5432
+      - ${DB_PORT}:${DB_PORT}
     volumes:
       - pgdata:/var/lib/postgresql/data
-networks:
-  webnet:
+
 volumes:
   pgdata:

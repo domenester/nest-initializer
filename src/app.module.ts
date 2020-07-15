@@ -13,11 +13,13 @@ import { jwtConstants } from './auth/constants'
 import { JwtStrategy } from './auth/strategies/jwt.strategy'
 import { TypeOrmModule } from '@nestjs/typeorm'
 import { PasswordModule } from './password/password.module'
-import { RegisterModule } from './register/register.module';
+import { RegisterModule } from './register/register.module'
 import databaseConfig from './config/database.config'
 import jwtConfig from './config/jwt'
 
-const entitiesRelativePath = process.env.NODE_ENV === 'test' ? '.' : 'dist'
+const { NODE_ENV } = process.env
+
+const entitiesRelativePath = NODE_ENV === 'test' ? '.' : 'dist'
 
 export const MailerModuleForRoot = MailerModule.forRoot({
   transport: 'smtps://domene.dev@gmail.com:DomeneDevPa$$@smtp.gmail.com',
@@ -34,7 +36,7 @@ export const MailerModuleForRoot = MailerModule.forRoot({
 })
 
 export const ConfigModuleForRoot = ConfigModule.forRoot({
-  envFilePath: '.env'
+  envFilePath: '../.env'
 })
 
 @Module({

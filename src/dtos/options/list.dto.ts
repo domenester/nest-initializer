@@ -9,5 +9,5 @@ export class ListDto {
   skip: number
 
   @IsOptional()
-  filter: string
+  filter?: string
 }
