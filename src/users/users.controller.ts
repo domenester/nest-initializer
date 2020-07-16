@@ -52,14 +52,20 @@ export class UsersController {
   @Roles('owner')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('delete')
-  async delete(@Body() body): Promise<UpdateResult> {
-    return this.userService.delete(body.email)
+  async delete(@Body() body): Promise<ApiResponse> {
+    await this.userService.delete(body.email)
+    return {
+      message: 'Usuário desabilitado com sucesso'
+    }
   }
 
   @Roles('owner')
   @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('restore')
-  async restore(@Body() body): Promise<UpdateResult> {
-    return this.userService.restore(body.email)
+  async restore(@Body() body): Promise<ApiResponse> {
+    await this.userService.restore(body.email)
+    return {
+      message: 'Usuário habilitado com sucesso'
+    }
   }
 }

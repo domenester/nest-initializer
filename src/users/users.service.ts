@@ -29,6 +29,15 @@ export class UsersService {
       .getOne()
   }
 
+  async getByEmailWithDeleted(email: string): Promise<UserEntity> {
+    return this.userRepository
+      .createQueryBuilder('user')
+      .leftJoinAndSelect('user.roles', 'role')
+      .where('user.email = :email', { email })
+      .withDeleted()
+      .getOne()
+  }
+
   async isEmailRegistered(email: string): Promise<boolean> {
     const exists = await this.userRepository.findOne({ email })
     return !!exists
@@ -47,6 +56,7 @@ export class UsersService {
     const take = this.configService.get<string>('PAGINATION')
     return this.userRepository.findAndCount({
       order: { email: 'ASC' },
+      withDeleted: true,
       ...(
         filter && {
           where : [
@@ -110,12 +120,18 @@ export class UsersService {
   }
 
   async delete(email: string): Promise<UpdateResult> {
-    const userByEmail = await this.getByEmail(email)
+    const userByEmail = await this.getByEmailWithDeleted(email)
+    if (!userByEmail) {
+      throw new BadRequestException('Email não encontrado')
+    }
     return this.userRepository.softDelete(userByEmail.id)
   }
 
   async restore(email: string): Promise<UpdateResult> {
-    const userByEmail = await this.getByEmail(email)
+    const userByEmail = await this.getByEmailWithDeleted(email)
+    if (!userByEmail) {
+      throw new BadRequestException('Email não encontrado')
+    }
     return this.userRepository.restore(userByEmail.id)
   }
 }

@@ -1,4 +1,4 @@
-import { OneToMany, Column, PrimaryGeneratedColumn } from 'typeorm'
+import { OneToMany, Column, PrimaryGeneratedColumn, DeleteDateColumn } from 'typeorm'
 import { UserEntity } from './_user.entity'
 
 export type IEntityBaseId = number
@@ -36,4 +36,11 @@ export class EntityBase {
     select: false
   })
   updatedAt: Date;
+
+  @DeleteDateColumn({
+    type: 'timestamp',
+    default: () => null,
+    select: true
+  })
+  deletedAt?: Date
 }

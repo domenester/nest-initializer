@@ -32,6 +32,7 @@ export class MockRepository<T> {
     getMany: jest.fn(),
     getOne: jest.fn(),
     delete: jest.fn().mockReturnThis(),
-    execute: jest.fn().mockReturnThis()
+    execute: jest.fn().mockReturnThis(),
+    withDeleted: jest.fn().mockReturnThis()
   };
 }
