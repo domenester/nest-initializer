@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
+import { Injectable, BadRequestException, InternalServerErrorException } from '@nestjs/common'
 import { MailerService } from '@nestjs-modules/mailer'
 import { ConfigService } from '@nestjs/config'
 import * as path from 'path'
@@ -24,14 +24,17 @@ export class PasswordService {
     process.env.NODE_ENV !== 'test' && await this
       .mailerService
       .sendMail({
-        to: 'diogodomene@gmail.com',
+        to: email,
         from: 'noreply@nestinitializer.com',
         subject: 'Reset Password Requested',
-        template: path.join(__dirname, '../templates/email/reset-password'),
+        template: path.join(__dirname, '../../templates/email/reset-password'),
         context: {
           email,
           url: `${url}/reset-password?token=${token}`
         }
+      }).catch((error: any) => {
+        console.log(error)
+        throw new InternalServerErrorException('Erro ao enviar email')
       })
     return { message: 'Link to reset password sent' }
   }
