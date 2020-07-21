@@ -10,7 +10,7 @@ services:
       - .:/usr/src/app
       - /usr/app/node_modules
     tty: true
-    command: sh -c "npm start"
+    command: sh -c "npm run build && npm start"
     ports:
       - ${SERVER_PORT}:${SERVER_PORT}
       - 9229:9229
