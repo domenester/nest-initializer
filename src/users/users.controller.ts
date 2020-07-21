@@ -51,9 +51,19 @@ export class UsersController {
 
   @Roles('owner')
   @UseGuards(JwtAuthGuard, RolesGuard)
+  @Post('remove')
+  async remove(@Body() body): Promise<ApiResponse> {
+    await this.userService.delete(body.email)
+    return {
+      message: 'Usuário deletado com sucesso'
+    }
+  }
+
+  @Roles('owner')
+  @UseGuards(JwtAuthGuard, RolesGuard)
   @Post('delete')
   async delete(@Body() body): Promise<ApiResponse> {
-    await this.userService.delete(body.email)
+    await this.userService.softDelete(body.email)
     return {
       message: 'Usuário desabilitado com sucesso'
     }

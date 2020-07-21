@@ -1,5 +1,5 @@
-import { Injectable, BadRequestException } from '@nestjs/common'
-import { Repository, UpdateResult, In, Like } from 'typeorm'
+import { Injectable, BadRequestException, ForbiddenException } from '@nestjs/common'
+import { Repository, UpdateResult, In, Like, DeleteResult } from 'typeorm'
 import { UserEntity, RoleEntity } from '../entities'
 import { InjectRepository } from '@nestjs/typeorm'
 import {
@@ -119,7 +119,14 @@ export class UsersService {
     return this.userRepository.save({ ...newUser })
   }
 
-  async delete(email: string): Promise<UpdateResult> {
+  async delete(email: string): Promise<DeleteResult> {
+    if (process.env.NODE_ENV === 'production') {
+      throw new ForbiddenException('Operação não permitida')
+    }
+    return this.userRepository.delete({ email })
+  }
+
+  async softDelete(email: string): Promise<UpdateResult> {
     const userByEmail = await this.getByEmailWithDeleted(email)
     if (!userByEmail) {
       throw new BadRequestException('Email não encontrado')

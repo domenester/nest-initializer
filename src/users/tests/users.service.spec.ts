@@ -66,7 +66,7 @@ describe('Users Service Tests', () => {
     const { _default } = UserMocks
     jest.spyOn(repository.queryBuilder, 'getOne').mockResolvedValueOnce(_default as never)
     jest.spyOn(repository, 'softDelete').mockResolvedValueOnce(_default as never)
-    const deleted = await service.delete(_default.email)
+    const deleted = await service.softDelete(_default.email)
     expect(!!deleted).toBe(true)
   })
 
