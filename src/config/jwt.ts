@@ -1,4 +1,4 @@
 export default {
-  expiresInDefault: '1h',
+  expiresInDefault: '7d',
   expirsInForgotPassword: '1h'
 }
