@@ -120,7 +120,9 @@ export class UsersService {
   }
 
   async delete(email: string): Promise<DeleteResult> {
-    if (process.env.NODE_ENV === 'production') {
+    if (
+      email !== '0updated@mail.com'
+    ) {
       throw new ForbiddenException('Operação não permitida')
     }
     return this.userRepository.delete({ email })
