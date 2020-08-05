@@ -26,7 +26,7 @@ export class EntityBase {
   @Column({
     type: 'timestamp',
     default: () => 'CURRENT_TIMESTAMP',
-    select: false
+    select: true
   })
   createdAt: Date;
 

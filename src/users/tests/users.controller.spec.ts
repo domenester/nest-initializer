@@ -6,6 +6,7 @@ import { Repository } from 'typeorm'
 import { UserEntity } from '../../entities'
 import { getRepositoryToken } from '@nestjs/typeorm'
 import { ConfigModuleForRoot } from '../../config/module.config'
+import { ListModule } from '../../list/list.module'
 
 describe('Users Controller', () => {
   let controller: UsersController
@@ -13,7 +14,10 @@ describe('Users Controller', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ ConfigModuleForRoot() ],
+      imports: [
+        ConfigModuleForRoot(),
+        ListModule
+      ],
       controllers: [ UsersController ],
       providers: [
         ...userServiceProviders

@@ -1,14 +1,16 @@
 import { Injectable, BadRequestException, ForbiddenException } from '@nestjs/common'
-import { Repository, UpdateResult, In, Like, DeleteResult } from 'typeorm'
+import { Repository, UpdateResult, In, Like, DeleteResult, Between, ObjectLiteral, FindConditions } from 'typeorm'
 import { UserEntity, RoleEntity } from '../entities'
 import { InjectRepository } from '@nestjs/typeorm'
 import {
   CreateUserDto,
   UpdateUserDto,
-  ListDto
+  ListDto,
+  ListFilter
 } from '../dtos'
 import * as bcrypt from 'bcryptjs'
 import { ConfigService } from '@nestjs/config'
+import { ListService } from '../list/list.service'
 
 @Injectable()
 export class UsersService {
@@ -18,7 +20,8 @@ export class UsersService {
     private readonly userRepository: Repository<UserEntity>,
     @InjectRepository(RoleEntity)
     private readonly roleRepository: Repository<RoleEntity>,
-    private readonly configService: ConfigService
+    private readonly configService: ConfigService,
+    private readonly listService: ListService
   ) {}
 
   async getByEmail(email: string): Promise<UserEntity> {
@@ -58,21 +61,17 @@ export class UsersService {
       order: { email: 'ASC' },
       withDeleted: true,
       ...(
-        filter && {
-          where : [
-            { name : Like(`%${filter}%`) },
-            { email : Like(`%${filter}%`) },
-            { username : Like(`%${filter}%`) }
-          ]
-        }
+        filter && this.listService.buildFilter({ ...filter, fields: [
+          'name', 'username', 'email'
+        ]})
       ),
       take: options.take || +take,
       skip: options.skip || 0
     }).then(response => {
       return {
         rows: response[0].map( row => {
-          const { password, ...result } = row
-          return result
+          const { password, deletedAt, ...result } = row
+          return { ...result, ...(deletedAt && { deletedAt }) }
         }),
         count: response[1]
       }
@@ -121,7 +120,7 @@ export class UsersService {
 
   async delete(email: string): Promise<DeleteResult> {
     if (
-      email !== '0updated@mail.com'
+      !['0updated@mail.com', '0created@mail.com'].includes(email)
     ) {
       throw new ForbiddenException('Operação não permitida')
     }
