@@ -15,20 +15,19 @@ export class Logger implements LoggerService {
     const content = this.format(`${message}`, type)
     const { LOGEASY_URL } = process.env
     if (type === 'error' || type === 'warn') {
-      try {
-        request(LOGEASY_URL, {
-          headers: { ['Content-Type']: 'application/json' },
-          method: 'post',
-          body: JSON.stringify({
-            stream: 'nest',
-            name: 'nest-initializer',
-            message: message,
-            severity: type
-          })
+      request(LOGEASY_URL, {
+        headers: { ['Content-Type']: 'application/json' },
+        method: 'post',
+        body: JSON.stringify({
+          stream: 'nest',
+          name: 'nest-initializer',
+          message: message,
+          severity: type
         })
-      } catch (err) {
-        console.error('err: ', err)
-      }
+      }, (err) => {
+        console.error('logger: ', err)  
+        return err
+      })
     }
     console.log(content)
     return content
