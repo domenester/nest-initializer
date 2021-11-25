@@ -9,7 +9,7 @@
     "prebuild": "rimraf dist",
     "build": "nest build && npm run copy:assets",
     "format": "prettier --write \"src/**/*.ts\" \"test/**/*.ts\"",
-    "start": "NODE_ENV=production nest start",
+    "start": "NODE_ENV=development nest start",
     "start:dev": "NODE_ENV=development nest start --watch",
     "start:debug": "NODE_ENV=development nest start --debug --watch",
     "start:debug:docker": "nest start --debug 0.0.0.0:9229 --watch",
@@ -37,6 +37,7 @@
     }
   },
   "dependencies": {
+    "@hewmen/serverless-plugin-typescript": "^1.1.17",
     "@nestjs-modules/mailer": "^1.4.2",
     "@nestjs/common": "^7.0.5",
     "@nestjs/config": "^0.4.0",
@@ -46,9 +47,12 @@
     "@nestjs/platform-express": "^7.0.0",
     "@nestjs/typeorm": "^7.0.0",
     "@types/request": "^2.48.5",
+    "aws-lambda": "^1.0.6",
+    "aws-serverless-express": "^3.3.8",
     "bcryptjs": "^2.4.3",
     "class-transformer": "^0.2.3",
     "class-validator": "^0.11.1",
+    "express": "^4.17.1",
     "moment-timezone": "^0.5.31",
     "nodemailer": "^6.4.6",
     "passport": "^0.4.1",
@@ -59,6 +63,9 @@
     "request": "^2.88.2",
     "rimraf": "^3.0.2",
     "rxjs": "^6.5.4",
+    "serverless-offline": "^6.5.0",
+    "serverless-plugin-optimize": "^4.1.4-rc.1",
+    "serverless-plugin-warmup": "^4.9.0",
     "typeorm": "^0.2.24"
   },
   "devDependencies": {
@@ -88,12 +95,16 @@
     "jest": "^25.1.0",
     "log-symbols": "^3.0.0",
     "prettier": "^1.19.1",
+    "serverless-dotenv-plugin": "^3.0.0",
+    "serverless-plugin-webpack": "^1.5.1",
+    "serverless-webpack": "^5.3.3",
     "supertest": "^4.0.2",
     "ts-jest": "25.2.1",
     "ts-loader": "^6.2.1",
     "ts-node": "^8.6.2",
     "tsconfig-paths": "^3.9.0",
-    "typescript": "^3.7.4"
+    "typescript": "^3.7.4",
+    "webpack": "^4.44.1"
   },
   "jest": {
     "moduleFileExtensions": [

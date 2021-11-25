@@ -1,0 +1,26 @@
+service:
+  name: nest-initializer-serverless
+ 
+plugins:
+- serverless-offline
+- serverless-dotenv-plugin
+
+custom:
+  secrets: ${file(./secrets.yml):${self:provider.stage}}
+  dotenv:
+    path: ./.env.development
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  stage: ${opt:stage, 'develop'}
+  environment:
+    API_KEY_EXAMPLE: ${self:custom.secrets.API_KEY_EXAMPLE}
+
+functions:
+  main:
+    handler: dist/src/serverless.handler
+    events:
+      - http:
+          method: any
+          path: /{any+}
